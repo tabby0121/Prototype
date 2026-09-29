@@ -631,73 +631,63 @@ export default function EmpathyFamilyGame() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4 font-sans sm:p-8">
-      {/* Mobile Device Mockup Container */}
-      <div className="w-full max-w-[420px] h-[850px] max-h-[90vh] bg-white rounded-[3rem] shadow-2xl relative overflow-hidden flex flex-col ring-8 ring-white/50">
-        {/* Dynamic Screen Routing */}
-        <div className="flex-1 w-full relative overflow-hidden">
-          {gameState === "lobby" && renderLobby()}
+    <div className="min-h-[100dvh] w-full font-sans flex flex-col bg-white overflow-x-hidden">
+      {/* Dynamic Screen Routing - Full Screen Edge-to-Edge */}
+      <div className="flex-1 w-full relative flex flex-col overflow-hidden">
+        {gameState === "lobby" && renderLobby()}
 
-          {gameState === "pass_role" &&
-            renderPassScreen(
-              "บทบาทของคุณในรอบนี้คือ",
-              () => setIsRevealed(true),
-              <div className="text-5xl font-black text-blue-500 bg-blue-50 w-full py-8 rounded-3xl border border-blue-100">
-                {players[currentPlayerIndex].role}
-              </div>,
-              handleNextPlayerRole,
-              true,
-            )}
+        {gameState === "pass_role" &&
+          renderPassScreen(
+            "บทบาทของคุณในรอบนี้คือ",
+            () => setIsRevealed(true),
+            <div className="text-5xl font-black text-blue-500 bg-blue-50 w-full py-8 rounded-3xl border border-blue-100">
+              {players[currentPlayerIndex]?.role}
+            </div>,
+            handleNextPlayerRole,
+            true,
+          )}
 
-          {gameState === "reflection" && renderReflection()}
+        {gameState === "reflection" && renderReflection()}
 
-          {gameState === "pass_emotion" &&
-            renderPassScreen(
-              `คุณ (${players[currentPlayerIndex].role}) รู้สึกอย่างไรกับสถานการณ์นี้?`,
-              () => setIsRevealed(true),
-              <div className="w-full grid gap-4 mt-2">
-                <button
-                  onClick={() => handleSelectEmotion("green")}
-                  className="flex items-center gap-4 p-4 rounded-2xl border-2 border-green-100 bg-green-50 active:scale-95 transition-transform"
-                >
-                  <Smile className="w-10 h-10 text-green-500" />
-                  <span className="font-bold text-green-700 text-lg">
-                    สบายใจ
-                  </span>
-                </button>
-                <button
-                  onClick={() => handleSelectEmotion("gray")}
-                  className="flex items-center gap-4 p-4 rounded-2xl border-2 border-gray-100 bg-gray-50 active:scale-95 transition-transform"
-                >
-                  <Meh className="w-10 h-10 text-gray-500" />
-                  <span className="font-bold text-gray-700 text-lg">
-                    เฉยๆ / ปกติ
-                  </span>
-                </button>
-                <button
-                  onClick={() => handleSelectEmotion("red")}
-                  className="flex items-center gap-4 p-4 rounded-2xl border-2 border-red-100 bg-red-50 active:scale-95 transition-transform"
-                >
-                  <Frown className="w-10 h-10 text-red-500" />
-                  <span className="font-bold text-red-700 text-lg">
-                    ไม่สบายใจ
-                  </span>
-                </button>
-              </div>,
-              null,
-              false, // Don't show next button, selection auto-advances
-            )}
+        {gameState === "pass_emotion" &&
+          renderPassScreen(
+            `คุณ (${players[currentPlayerIndex]?.role}) รู้สึกอย่างไรกับสถานการณ์นี้?`,
+            () => setIsRevealed(true),
+            <div className="w-full grid gap-4 mt-2">
+              <button
+                onClick={() => handleSelectEmotion("green")}
+                className="flex items-center gap-4 p-4 rounded-2xl border-2 border-green-100 bg-green-50 active:scale-95 transition-transform"
+              >
+                <Smile className="w-10 h-10 text-green-500" />
+                <span className="font-bold text-green-700 text-lg">สบายใจ</span>
+              </button>
+              <button
+                onClick={() => handleSelectEmotion("gray")}
+                className="flex items-center gap-4 p-4 rounded-2xl border-2 border-gray-100 bg-gray-50 active:scale-95 transition-transform"
+              >
+                <Meh className="w-10 h-10 text-gray-500" />
+                <span className="font-bold text-gray-700 text-lg">
+                  เฉยๆ / ปกติ
+                </span>
+              </button>
+              <button
+                onClick={() => handleSelectEmotion("red")}
+                className="flex items-center gap-4 p-4 rounded-2xl border-2 border-red-100 bg-red-50 active:scale-95 transition-transform"
+              >
+                <Frown className="w-10 h-10 text-red-500" />
+                <span className="font-bold text-red-700 text-lg">
+                  ไม่สบายใจ
+                </span>
+              </button>
+            </div>,
+            null,
+            false,
+          )}
 
-          {gameState === "reveal_all" && renderRevealAll()}
-          {gameState === "randomizer" && renderRandomizer()}
-          {gameState === "speaker" && renderSpeaker()}
-          {gameState === "end_game" && renderEndGame()}
-        </div>
-
-        {/* Decorative Home Indicator Bar for Mobile Feel */}
-        <div className="h-6 bg-transparent w-full absolute bottom-0 flex justify-center pb-2 z-50 pointer-events-none">
-          <div className="w-1/3 h-1.5 bg-gray-300/50 rounded-full"></div>
-        </div>
+        {gameState === "reveal_all" && renderRevealAll()}
+        {gameState === "randomizer" && renderRandomizer()}
+        {gameState === "speaker" && renderSpeaker()}
+        {gameState === "end_game" && renderEndGame()}
       </div>
     </div>
   );
