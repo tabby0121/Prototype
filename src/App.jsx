@@ -6,7 +6,6 @@ import {
   Smile,
   Meh,
   Frown,
-  CheckCircle2,
   RefreshCcw,
   Hand,
   Volume2,
@@ -14,82 +13,92 @@ import {
   Sparkles,
   HeartHandshake,
   Download,
+  AlertCircle,
 } from "lucide-react";
 
-// --- Game Data ---
-const ROLES_POOL = [
-  "พ่อ",
-  "แม่",
-  "ลูก",
-  "ปู่",
-  "ย่า",
-  "ตา",
-  "ยาย",
-  "พี่",
-  "น้อง",
-  "ลุง",
-  "ป้า",
-  "น้า",
-  "อา",
-];
-
-const CATEGORIES = [
-  {
-    id: "kids",
-    label: "วัยเด็กตอนกลาง",
-    color: "bg-[#BAE6FD]",
-    text: "text-[#0369A1]",
-    border: "border-[#7DD3FC]",
-  },
-  {
-    id: "teens",
-    label: "วัยรุ่น",
-    color: "bg-[#FDE047]",
-    text: "text-[#A16207]",
-    border: "border-[#FDE047]",
-  },
-  {
-    id: "adults",
-    label: "วัยผู้ใหญ่",
-    color: "bg-[#FECDD3]",
-    text: "text-[#BE123C]",
-    border: "border-[#FDA4AF]",
-  },
-  {
-    id: "seniors",
-    label: "วัยผู้สูงอายุ",
-    color: "bg-[#D9F99D]",
-    text: "text-[#4D7C0F]",
-    border: "border-[#BEF264]",
-  },
-];
-
-const SITUATIONS = {
-  kids: [
+// --- Role-Specific Problems Data ---
+const ROLE_PROBLEMS = {
+  พ่อ: [
+    "ที่ทำงานลดจำนวนคน ทำให้ต้องทำงานหนักขึ้น 2 เท่าโดยไม่ได้เงินเพิ่ม",
+    "หมุนเงินไม่ทันในเดือนนี้ และเครียดเรื่องภาระค่าใช้จ่ายในบ้าน",
+    "เหนื่อยจากการทำงานแล้วพอกลับมาบ้านก็เจอคนในบ้านทะเลาะกัน",
+    "รู้สึกกดดันที่เป็นเสาหลักและไม่มีใครรับฟังความอ่อนแอ",
+  ],
+  แม่: [
+    "รู้สึกผิดที่ไม่มีเวลาดูแลลูกหรือคนในบ้านได้อย่างเต็มที่เพราะงานยุ่งมาก",
+    "เหนื่อยล้ากับการจัดการงานบ้านและงานนอกบ้านที่ถมเข้ามาทุกวัน",
+    "รู้สึกว่าความเหนื่อยของตัวเองถูกมองข้ามและไม่มีใครช่วยแบ่งเบา",
+    "กังวลเรื่องอนาคตและการศึกษาของลูกจนนอนไม่หลับ",
+  ],
+  ลูก: [
     "โดนเพื่อนที่โรงเรียนล้อเลียนเรื่องรูปร่างหน้าตาจนไม่อยากไปโรงเรียน",
-    "ทำของเล่นชิ้นโปรดของน้องพังโดยไม่ได้ตั้งใจ และกลัวโดนดุ",
+    "อยากเรียนต่อตามความฝัน แต่ที่บ้านคาดหวังให้เรียนสายอื่น",
     "พยายามตั้งใจอ่านหนังสือสอบแล้ว แต่คะแนนก็ยังออกมาไม่ดี",
     "เพื่อนสนิทแอบไปเล่นกับกลุ่มอื่นแล้วทิ้งเราไว้คนเดียว",
   ],
-  teens: [
-    "อยากเรียนต่อสายศิลปะ แต่ที่บ้านคาดหวังให้เรียนหมอหรือวิศวะ",
-    "แอบชอบเพื่อนสนิทแต่ไม่กล้าบอก เพราะกลัวเสียเพื่อน",
-    "รู้สึกว่าพ่อแม่เข้ามาจุ้นจ้านเรื่องส่วนตัวและเช็คโทรศัพท์บ่อยเกินไป",
-    "มีปัญหากับเพื่อนในกลุ่มจนโดนแบนออกจากกลุ่มแชท",
-  ],
-  adults: [
-    "ที่ทำงานลดจำนวนคน ทำให้ต้องทำงานหนักขึ้น 2 เท่าโดยไม่ได้เงินเพิ่ม",
-    "หมุนเงินไม่ทันในเดือนนี้ และจำเป็นต้องขอยืมเงินคนในครอบครัว",
-    "เหนื่อยจากการทำงานแล้วพอกลับมาบ้านก็เจอคนในบ้านทะเลาะกัน",
-    "รู้สึกผิดที่ไม่มีเวลาดูแลลูกหรือพ่อแม่ที่แก่ชราได้อย่างเต็มที่",
-  ],
-  seniors: [
+  ปู่: [
     "รู้สึกเหงาที่ลูกหลานต่างคนต่างยุ่ง ไม่ค่อยมีใครมาเยี่ยมหรือคุยด้วย",
-    "ไปหาหมอแล้วพบว่าเป็นโรคที่ต้องกินยาตลอดชีวิต รู้สึกเป็นภาระ",
-    "พยายามใช้สมาร์ทโฟนแต่ทำไม่เป็น พอถามลูกหลานก็โดนหงุดหงิดใส่",
-    "รู้สึกว่าตัวเองไม่มีคุณค่าแล้วเพราะไม่ได้ทำงานหาเงินเหมือนเมื่อก่อน",
+    "ไปหาหมอแล้วพบว่าเป็นโรคที่ต้องกินยาตลอดชีวิต รู้สึกว่าเป็นภาระ",
+    "รู้สึกว่าตัวเองหมดคุณค่าเพราะไม่ได้ทำงานหาเงินเหมือนเมื่อก่อน",
+    "อยากช่วยแนะนำลูกหลานแต่กลัวกลายเป็นคนน่ารำคาญ",
+  ],
+  ย่า: [
+    "รู้สึกเหงาและโดดเดี่ยวเวลาอยู่บ้านคนเดียวในตอนที่ทุกคนออกไปทำงาน",
+    "สุขภาพร่างกายเริ่มถดถอยทำอะไรไม่ได้ดั่งใจเหมือนเก่า",
+    "เป็นห่วงลูกหลานมากเกินไปจนเก็บมาคิด24ชั่วโมง",
+    "รู้สึกว่าคำแนะนำของตัวเองเริ่มไม่มีใครรับฟังแล้ว",
+  ],
+  ตา: [
+    "ร่างกายเจ็บป่วยออดๆ แอดๆ ตามสังขาร ทำให้ไม่อยากไปไหนมาไหน",
+    "รู้สึกว่าโลกยุคใหม่เปลี่ยนไปเร็วมากจนตามไม่ทันและเข้ากับใครไม่ได้",
+    "อยากเล่าเรื่องอดีตให้ฟังแต่ไม่มีใครมีเวลาว่างมานั่งฟัง",
+    "หงุดหงิดง่ายกับเรื่องเล็กๆ น้อยๆ ในบ้านเพราะความเครียดสะสม",
+  ],
+  ยาย: [
+    "กังวลเรื่องสุขภาพของคนในครอบครัวมากกว่าสุขภาพของตัวเอง",
+    "เหนื่อยกับการต้องคอยจุกจิกดูแลทุกคนแต่ไม่มีใครเห็นความสำคัญ",
+    "นอนไม่ค่อยหลับเพราะคิดมากเรื่องปัญหาต่างๆ ในบ้าน",
+    "รู้สึกว่าบทบาทของตัวเองในบ้านเริ่มลดน้อยลง",
+  ],
+  พี่: [
+    "รู้สึกว่าพ่อแม่คาดหวังและกดดันให้เป็นตัวอย่างที่ดีให้น้องเสมอ",
+    "ต้องแบกรับปัญหาของตัวเองแถมยังต้องคอยแก้ปัญหาน้องอีก",
+    "เหนื่อยกับการเรียนหรือการทำงานและไม่มีพื้นที่ส่วนตัว",
+    "รู้สึกน้อยใจที่พ่อแม่มักจะให้น้องมากกว่า",
+  ],
+  น้อง: [
+    "รู้สึกว่าตัวเองมักจะโดนมองว่าเป็นเด็กเล็กและไม่มีสิทธิ์ออกความเห็น",
+    "โดนเปรียบเทียบกับพี่ตลอดเวลาจนสูญเสียความมั่นใจ",
+    "มีปัญหาที่โรงเรียนแต่ไม่กล้าบอกใครเพราะกลัวโดนดุ",
+    "รู้สึกอึดอัดที่ต้องทำตามกฎระเบียบเข้มงวดในบ้าน",
+  ],
+  ลุง: [
+    "แบกรับภาระกิจการหรือธุรกิจครอบครัวจนเครียดลงกระเพาะ",
+    "ปัญหาเศรษฐกิจทำให้การเงินฝืดเคืองจนไม่กล้าบอกใคร",
+    "รู้สึกโดดเดี่ยวเวลาต้องตัดสินใจเรื่องใหญ่ๆ คนเดียว",
+    "เหนื่อยล้าจากการรักษาน้ำใจคนในเครือญาติ",
+  ],
+  ป้า: [
+    "ทุ่มเททุกอย่างให้ครอบครัวแต่กลับรู้สึกว่าไม่มีใครเห็นความเหนื่อย",
+    "ปวดหัวกับเรื่องจุกจิกภายในบ้านที่แก้ไม่จบสิ้นสักที",
+    "มีความลับเรื่องสุขภาพที่ไม่กล้าบอกคนอื่นเพราะไม่อยากให้เป็นห่วง",
+    "รู้สึกเหนื่อยหน่ายกับบทบาทแม่บ้านที่ไม่มีวันหยุด",
+  ],
+  น้า: [
+    "รู้สึกว่าเป็นคนนอกที่เข้ามาอยู่ในบ้านแล้วเกรงใจคนอื่น",
+    "อยากช่วยออกความเห็นเรื่องในบ้านแต่กลัวโดนมองว่าก้าวก่าย",
+    "มีปัญหาชีวิตส่วนตัวแต่ต้องทำเป็นเข้มแข็งต่อหน้าทุกคน",
+    "ปรับตัวเข้ากับวิถีชีวิตของคนในบ้านหลังนี้ได้ยาก",
+  ],
+  อา: [
+    "กำลังอยู่ในช่วงเปลี่ยนผ่านของชีวิตและยังหาจุดยืนของตัวเองไม่เจอ",
+    "ถูกเปรียบเทียบความสำเร็จกับญาติคนอื่นๆ ในครอบครัว",
+    "มีความกดดันเรื่องการสร้างครอบครัวหรือการเงินของตัวเอง",
+    "รู้สึกว่าคนในบ้านไม่เข้าใจไลฟ์สไตล์ของตัวเอง",
   ],
 };
+
+const ROLES_POOL = Object.keys(ROLE_PROBLEMS);
 
 const EMPATHY_SPECTRUM = [
   {
@@ -127,12 +136,11 @@ export default function EmpathyFamilyGame() {
   const [gameState, setGameState] = useState("lobby");
 
   const [playerCount, setPlayerCount] = useState(4);
-  const [selectedCats, setSelectedCats] = useState(["kids", "teens", "adults"]);
   const [currentRound, setCurrentRound] = useState(1);
-  const MAX_ROUNDS = 2;
+  const TOTAL_ROUNDS = 2;
 
   const [players, setPlayers] = useState([]);
-  const [currentSituation, setCurrentSituation] = useState("");
+  const [roundOwnerIndices, setRoundOwnerIndices] = useState([]);
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [isRevealed, setIsRevealed] = useState(false);
   const [timeLeft, setTimeLeft] = useState(60);
@@ -153,34 +161,30 @@ export default function EmpathyFamilyGame() {
   }, [activeTouches]);
 
   const startGame = () => {
-    if (selectedCats.length === 0)
-      return alert("กรุณาเลือกช่วงวัยอย่างน้อย 1 ช่วงวัย");
     setCurrentRound(1);
-    setupRound(true);
-  };
 
-  const setupRound = (isFirstRound = false) => {
-    const pool = selectedCats.flatMap((catId) => SITUATIONS[catId]);
-    const randomSituation = pool[Math.floor(Math.random() * pool.length)];
-    setCurrentSituation(randomSituation);
+    const shuffledRoles = shuffleArray(ROLES_POOL).slice(0, playerCount);
+    const initialPlayers = shuffledRoles.map((role, idx) => {
+      const problemsPool = ROLE_PROBLEMS[role];
+      const randomProb =
+        problemsPool[Math.floor(Math.random() * problemsPool.length)];
 
-    if (isFirstRound) {
-      const shuffledRoles = shuffleArray(ROLES_POOL).slice(0, playerCount);
-      const initialPlayers = shuffledRoles.map((role, idx) => ({
+      return {
         id: `P${idx + 1}`,
         name: `ผู้เล่นที่ ${idx + 1}`,
         role: role,
+        problem: randomProb,
         emotion: null,
         hasSpoken: false,
         compassionScore: 0,
-      }));
-      setPlayers(initialPlayers);
-    } else {
-      setPlayers(
-        players.map((p) => ({ ...p, emotion: null, hasSpoken: false })),
-      );
-    }
+      };
+    });
 
+    const playerIndices = Array.from({ length: playerCount }, (_, i) => i);
+    const shuffledIndices = shuffleArray(playerIndices);
+    setRoundOwnerIndices(shuffledIndices);
+
+    setPlayers(initialPlayers);
     setCurrentPlayerIndex(0);
     setIsRevealed(false);
     setGameState("pass_role");
@@ -191,9 +195,16 @@ export default function EmpathyFamilyGame() {
       setCurrentPlayerIndex((prev) => prev + 1);
       setIsRevealed(false);
     } else {
+      // ดูบทบาทครบแล้ว เข้าหน้าเสนอปัญหาพร้อมเริ่มนับถอยหลังทันที
       setTimeLeft(60);
-      setGameState("reflection");
+      setGameState("problem_reflection");
     }
+  };
+
+  const getCurrentRoundOwner = () => {
+    if (players.length === 0 || roundOwnerIndices.length === 0) return {};
+    const ownerIdx = roundOwnerIndices[currentRound - 1] ?? 0;
+    return players[ownerIdx] || {};
   };
 
   const startEmotionPhase = () => {
@@ -273,9 +284,10 @@ export default function EmpathyFamilyGame() {
     }
   };
 
+  // นับเวลาถอยหลัง 60 วิ สำหรับหน้าเสนอปัญหา + Reflection
   useEffect(() => {
     let timer;
-    if (gameState === "reflection" && timeLeft > 0) {
+    if (gameState === "problem_reflection" && timeLeft > 0) {
       timer = setTimeout(() => setTimeLeft((t) => t - 1), 1000);
     }
     return () => clearTimeout(timer);
@@ -310,9 +322,14 @@ export default function EmpathyFamilyGame() {
       setVotingTargetIndex((prev) => prev + 1);
       setCurrentVotes({});
     } else {
-      if (currentRound < MAX_ROUNDS) {
+      if (currentRound < TOTAL_ROUNDS) {
         setCurrentRound((prev) => prev + 1);
-        setupRound(false);
+        setPlayers(
+          newPlayers.map((p) => ({ ...p, emotion: null, hasSpoken: false })),
+        );
+        setCurrentPlayerIndex(0);
+        setTimeLeft(60);
+        setGameState("problem_reflection"); // เข้าสู่รอบที่ 2 จับเวลาพร้อมปัญหาทันที
       } else {
         setRevealIndex(0);
         setIsCardFlipped(false);
@@ -338,11 +355,11 @@ export default function EmpathyFamilyGame() {
           Empathy <br /> <span className="text-rose-400">Family Game</span>
         </h1>
         <p className="text-gray-500 text-xs mt-2 font-medium text-center px-4">
-          เกมการ์ดครอบครัว เพื่อความเข้าใจอกเข้าใจกัน
+          เกมการ์ดครอบครัว เพื่อความเข้าใจอกเข้าใจกัน (เล่น 2 รอบ)
         </p>
       </div>
 
-      <div className="flex-1 bg-white rounded-[2rem] shadow-[0_8px_30px_rgba(0,0,0,0.03)] p-5 flex flex-col gap-4">
+      <div className="flex-1 bg-white rounded-[2rem] shadow-[0_8px_30px_rgba(0,0,0,0.03)] p-5 flex flex-col gap-6 justify-center">
         <div>
           <label className="text-xs font-bold text-gray-700 mb-2 flex items-center gap-2">
             <Users className="w-4 h-4 text-emerald-500" /> จำนวนผู้เล่น
@@ -366,62 +383,26 @@ export default function EmpathyFamilyGame() {
           </div>
         </div>
 
-        <div className="flex-1">
-          <label className="text-xs font-bold text-gray-700 mb-2 block">
-            ช่วงวัยของสถานการณ์ (เลือกได้หลายข้อ)
-          </label>
-          <div className="grid grid-cols-2 gap-2.5">
-            {CATEGORIES.map((cat) => {
-              const isSelected = selectedCats.includes(cat.id);
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() =>
-                    setSelectedCats((prev) =>
-                      prev.includes(cat.id)
-                        ? prev.filter((id) => id !== cat.id)
-                        : [...prev, cat.id],
-                    )
-                  }
-                  className={`p-3 rounded-2xl border-2 transition-all text-left flex flex-col gap-1 relative overflow-hidden
-                    ${isSelected ? `${cat.color}${cat.border} ring-2 ring-offset-2 ring-white scale-[1.02]` : "bg-gray-50 border-transparent"}`}
-                >
-                  <span
-                    className={`font-bold text-xs ${isSelected ? cat.text : "text-gray-500"}`}
-                  >
-                    {cat.label}
-                  </span>
-                  {isSelected && (
-                    <CheckCircle2
-                      className={`w-4 h-4 absolute bottom-2 right-2 ${cat.text} opacity-50`}
-                    />
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
         <button
           onClick={startGame}
-          className="w-full bg-emerald-500 hover:bg-emerald-400 text-white rounded-2xl py-3.5 text-base font-black flex items-center justify-center gap-2 shadow-md"
+          className="w-full bg-emerald-500 hover:bg-emerald-400 text-white rounded-2xl py-4 text-base font-black flex items-center justify-center gap-2 shadow-md active:scale-95 transition-transform"
         >
-          <Play className="fill-white w-4 h-4" /> เริ่มเกม
+          <Play className="fill-white w-4 h-4" /> เริ่มเกมสุ่มบทบาท
         </button>
       </div>
     </div>
   );
 
-  const renderPassScreen = (title, children, onNext, showNextButton) => {
-    const p = players[currentPlayerIndex];
+  const renderPassScreenRole = () => {
+    const p = players[currentPlayerIndex] || {};
     return (
       <div className="flex flex-col h-full bg-[#FDF8F5] p-5 text-center">
         <div className="flex justify-between items-center mb-4">
           <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest">
-            รอบที่ {currentRound}/{MAX_ROUNDS}
+            ช่วงเริ่มต้นเกม
           </span>
           <span className="text-gray-400 font-bold text-xs">
-            คนโจทย์ที่ {currentPlayerIndex + 1}/{players.length}
+            คนที่ {currentPlayerIndex + 1}/{players.length}
           </span>
         </div>
 
@@ -439,25 +420,38 @@ export default function EmpathyFamilyGame() {
               </h3>
               <button
                 onClick={() => setIsRevealed(true)}
-                className="w-full bg-blue-500 text-white rounded-2xl py-3.5 text-base font-bold shadow-md"
+                className="w-full bg-blue-500 text-white rounded-2xl py-3.5 text-base font-bold shadow-md active:scale-95 transition-transform"
               >
-                ฉันคือ {p.name} (กดเพื่อดู)
+                ฉันคือ {p.name} (กดเพื่อดูบทบาท)
               </button>
             </div>
           ) : (
             <div className="w-full bg-white p-6 rounded-[2rem] shadow-xl border border-gray-100 flex flex-col items-center">
-              <span className="text-gray-500 font-bold text-sm mb-2">
-                {title}
+              <span className="text-gray-500 font-bold text-sm mb-4">
+                บทบาทและปัญหาลึกๆ ในใจของคุณ
               </span>
-              {children}
-              {showNextButton && (
-                <button
-                  onClick={onNext}
-                  className="mt-6 w-full bg-gray-800 text-white rounded-2xl py-3.5 text-base font-bold shadow-md"
-                >
-                  ซ่อน และส่งให้คนต่อไป
-                </button>
-              )}
+              <div className="w-full bg-blue-50 p-5 rounded-3xl border border-blue-100 text-center">
+                <div className="text-3xl font-black text-blue-600 mb-2">
+                  {p.role}
+                </div>
+                <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">
+                  ปัญหาประจำตัวของคุณ
+                </div>
+                <p className="text-sm font-bold text-gray-700 leading-relaxed">
+                  "{p.problem}"
+                </p>
+              </div>
+              <p className="text-xs text-rose-500 font-bold mt-4">
+                จำปัญหาของคุณไว้ให้ดี เพราะอาจถูกสุ่มมาเป็นโจทย์!
+              </p>
+              <button
+                onClick={handleNextPlayerRole}
+                className="mt-6 w-full bg-gray-800 text-white rounded-2xl py-3.5 text-base font-bold shadow-md active:scale-95 transition-transform"
+              >
+                {currentPlayerIndex < players.length - 1
+                  ? "ซ่อน และส่งให้คนต่อไป"
+                  : "เริ่มรอบที่ 1 ทันที"}
+              </button>
             </div>
           )}
         </div>
@@ -465,34 +459,152 @@ export default function EmpathyFamilyGame() {
     );
   };
 
-  const renderReflection = () => (
-    <div className="flex flex-col h-full bg-[#EFF6FF] p-5">
-      <div className="flex justify-center mb-4 pt-2">
-        <div className="bg-white px-5 py-1.5 rounded-full shadow-sm flex items-center gap-2 border border-blue-100">
-          <Clock className="w-4 h-4 text-blue-500" />
-          <span className="text-blue-500 font-black text-lg">{timeLeft}s</span>
+  // หน้าจอ: เสนอปัญหา + จับเวลา 60 วินาทีพร้อมกัน
+  const renderProblemReflection = () => {
+    const owner = getCurrentRoundOwner();
+    const isTimeOut = timeLeft === 0;
+
+    return (
+      <div className="flex flex-col h-full bg-[#FFF7ED] p-5">
+        <div className="flex justify-between items-center mb-3">
+          <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest">
+            รอบที่ {currentRound}/{TOTAL_ROUNDS}
+          </span>
+          <div
+            className={`px-4 py-1.5 rounded-full shadow-sm flex items-center gap-2 border transition-all ${
+              isTimeOut
+                ? "bg-red-500 text-white border-red-600 animate-pulse"
+                : "bg-white text-orange-600 border-orange-200"
+            }`}
+          >
+            <Clock className="w-4 h-4" />
+            <span className="font-black text-lg">{timeLeft}s</span>
+          </div>
+        </div>
+
+        <div className="flex-1 bg-white rounded-[2rem] shadow-lg border border-orange-100 p-6 flex flex-col justify-between items-center text-center">
+          <div className="w-full flex flex-col items-center">
+            <div className="inline-flex items-center gap-1.5 bg-orange-50 border border-orange-200 text-orange-700 px-3.5 py-1 rounded-full text-xs font-bold mb-3">
+              <AlertCircle className="w-3.5 h-3.5" />
+              <span>
+                โจทย์ปัญหาจาก: {owner.role} ({owner.name})
+              </span>
+            </div>
+
+            <h3 className="text-xl font-black text-gray-800 mb-2">
+              "{owner.role}" กำลังเผชิญกับปัญหานี้:
+            </h3>
+
+            <div className="bg-[#FFFDF9] border-2 border-orange-100 p-5 rounded-2xl w-full my-2 shadow-inner">
+              <p className="text-base font-bold text-gray-800 leading-relaxed">
+                "{owner.problem}"
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-orange-50/70 p-3.5 rounded-2xl w-full border border-orange-100/60">
+            <p className="text-gray-500 text-xs font-medium leading-relaxed">
+              🕒 ให้เวลาทุกคน 60 วินาที
+              <br />
+              ลองสวมบทบาทตัวเอง แล้วตกตะกอนว่ารู้สึกอย่างไรและจะพูดกับ{" "}
+              <span className="font-bold text-orange-700">
+                {owner.role}
+              </span>{" "}
+              อย่างไร
+            </p>
+          </div>
+        </div>
+
+        <button
+          onClick={startEmotionPhase}
+          className={`mt-4 w-full rounded-2xl py-3.5 text-base font-bold shadow-md active:scale-95 transition-all ${
+            isTimeOut
+              ? "bg-rose-500 hover:bg-rose-600 text-white animate-bounce"
+              : "bg-orange-500 hover:bg-orange-600 text-white"
+          }`}
+        >
+          {isTimeOut
+            ? "หมดเวลาแล้ว! ไปเลือกอารมณ์"
+            : "ทุกคนพร้อมแล้ว (ไปเลือกอารมณ์)"}
+        </button>
+      </div>
+    );
+  };
+
+  const renderPassScreenEmotion = () => {
+    const p = players[currentPlayerIndex] || {};
+    const owner = getCurrentRoundOwner();
+
+    return (
+      <div className="flex flex-col h-full bg-[#FDF8F5] p-5 text-center">
+        <div className="flex justify-between items-center mb-4">
+          <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest">
+            รอบที่ {currentRound}/{TOTAL_ROUNDS}
+          </span>
+          <span className="text-gray-400 font-bold text-xs">
+            คนที่ {currentPlayerIndex + 1}/{players.length}
+          </span>
+        </div>
+
+        <div className="flex-1 flex flex-col items-center justify-center w-full">
+          {!isRevealed ? (
+            <div className="w-full bg-white p-6 rounded-[2rem] shadow-xl border border-gray-100 flex flex-col items-center">
+              <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-4">
+                <Users className="w-8 h-8 text-blue-400" />
+              </div>
+              <h2 className="text-xl font-black text-gray-800 mb-1">
+                ส่งเครื่องให้
+              </h2>
+              <h3 className="text-2xl font-black text-blue-500 mb-6">
+                {p.name}
+              </h3>
+              <button
+                onClick={() => setIsRevealed(true)}
+                className="w-full bg-blue-500 text-white rounded-2xl py-3.5 text-base font-bold shadow-md active:scale-95 transition-transform"
+              >
+                ฉันคือ {p.name} (กดเพื่อเลือกอารมณ์)
+              </button>
+            </div>
+          ) : (
+            <div className="w-full bg-white p-6 rounded-[2rem] shadow-xl border border-gray-100 flex flex-col items-center animate-in zoom-in-95">
+              <span className="text-gray-500 font-bold text-sm mb-4">
+                คุณ ({p.role}) รู้สึกอย่างไรกับปัญหาของ {owner.role}?
+              </span>
+              <div className="w-full grid gap-3 mt-1">
+                <button
+                  onClick={() => handleSelectEmotion("green")}
+                  className="flex items-center gap-3 p-3.5 rounded-2xl border-2 border-green-100 bg-green-50 active:scale-95 transition-transform"
+                >
+                  <Smile className="w-8 h-8 text-green-500" />
+                  <span className="font-bold text-green-700 text-base">
+                    สบายใจ / ให้กำลังใจ
+                  </span>
+                </button>
+                <button
+                  onClick={() => handleSelectEmotion("gray")}
+                  className="flex items-center gap-3 p-3.5 rounded-2xl border-2 border-gray-100 bg-gray-50 active:scale-95 transition-transform"
+                >
+                  <Meh className="w-8 h-8 text-gray-500" />
+                  <span className="font-bold text-gray-700 text-base">
+                    เฉยๆ / รับฟังปกติ
+                  </span>
+                </button>
+                <button
+                  onClick={() => handleSelectEmotion("red")}
+                  className="flex items-center gap-3 p-3.5 rounded-2xl border-2 border-red-100 bg-red-50 active:scale-95 transition-transform"
+                >
+                  <Frown className="w-8 h-8 text-red-500" />
+                  <span className="font-bold text-red-700 text-base">
+                    ไม่สบายใจ / เครียดตาม
+                  </span>
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
-      <div className="flex-1 bg-white rounded-[2rem] shadow-lg border border-blue-100 p-6 flex flex-col justify-center items-center text-center">
-        <span className="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-[11px] font-bold mb-4">
-          สถานการณ์ปัจจุบัน
-        </span>
-        <h2 className="text-xl font-bold text-gray-800 leading-relaxed mb-6">
-          "{currentSituation}"
-        </h2>
-        <p className="text-gray-400 font-medium text-xs">
-          ให้เวลาตกตะกอนความคิด ว่าในบทบาทของคุณ <br />{" "}
-          คุณจะรู้สึกและสื่อสารอย่างไร
-        </p>
-      </div>
-      <button
-        onClick={startEmotionPhase}
-        className="mt-4 w-full bg-blue-500 text-white rounded-2xl py-3.5 text-base font-bold shadow-md"
-      >
-        ทุกคนพร้อมแล้ว
-      </button>
-    </div>
-  );
+    );
+  };
 
   const renderRandomizer = () => {
     const unSpokenPlayers = players.filter((p) => !p.hasSpoken);
@@ -521,7 +633,11 @@ export default function EmpathyFamilyGame() {
               return (
                 <div
                   key={p.id}
-                  className={`relative bg-white rounded-2xl p-4 flex flex-col items-center justify-center shadow-md border-2 select-none touch-none transition-all duration-300 ${isActive ? "border-emerald-500 scale-95 bg-emerald-50" : "border-gray-100"}`}
+                  className={`relative bg-white rounded-2xl p-4 flex flex-col items-center justify-center shadow-md border-2 select-none touch-none transition-all duration-300 ${
+                    isActive
+                      ? "border-emerald-500 scale-95 bg-emerald-50"
+                      : "border-gray-100"
+                  }`}
                   onMouseDown={(e) => handleTouchStart(e, p.id)}
                   onMouseUp={(e) => handleTouchEnd(e, p.id)}
                   onMouseLeave={(e) => handleTouchEnd(e, p.id)}
@@ -556,7 +672,9 @@ export default function EmpathyFamilyGame() {
   };
 
   const renderSpeaker = () => {
-    const speaker = players.find((p) => p.id === currentSpeakerId);
+    const speaker = players.find((p) => p.id === currentSpeakerId) || {};
+    const owner = getCurrentRoundOwner();
+
     return (
       <div className="flex flex-col h-full bg-[#FEF2F2] p-5">
         <div className="flex justify-center mb-4 pt-2">
@@ -569,7 +687,7 @@ export default function EmpathyFamilyGame() {
             <div className="text-xs font-bold text-gray-400 mb-0.5">
               {speaker.name}
             </div>
-            <div className="text-3xl font-black text-gray-800 mb-3">
+            <div className="text-3xl font-black text-gray-800 mb-2">
               {speaker.role}
             </div>
             <div className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-xl mb-4">
@@ -584,16 +702,19 @@ export default function EmpathyFamilyGame() {
                 <Frown className="text-red-500 w-5 h-5" />
               )}
             </div>
-            <div className="bg-red-50 p-3.5 rounded-2xl w-full border border-red-100">
+            <div className="bg-red-50 p-4 rounded-2xl w-full border border-red-100">
+              <span className="text-[10px] font-bold text-red-400 uppercase block mb-1">
+                หัวข้อสนทนา: ปัญหาของ {owner.role}
+              </span>
               <p className="text-xs font-bold text-red-800 leading-relaxed">
-                "{currentSituation}"
+                "{owner.problem}"
               </p>
             </div>
           </div>
         </div>
         <button
           onClick={handleFinishedSpeaking}
-          className="w-full bg-red-500 text-white rounded-2xl py-3.5 text-base font-bold shadow-md"
+          className="w-full bg-red-500 text-white rounded-2xl py-3.5 text-base font-bold shadow-md active:scale-95 transition-transform"
         >
           พูดจบแล้ว
         </button>
@@ -608,7 +729,7 @@ export default function EmpathyFamilyGame() {
           ทำความรู้จัก 4 ระดับ
         </h2>
         <p className="text-gray-500 text-xs mt-0.5 font-medium">
-          ก่อนเริ่มประเมินการสื่อสารของแต่ละคน
+          ก่อนเริ่มประเมินการสื่อสารของแต่ละคนในรอบนี้
         </p>
       </div>
       <div className="flex flex-col gap-3 flex-1">
@@ -647,7 +768,7 @@ export default function EmpathyFamilyGame() {
       </div>
       <button
         onClick={startVotingPhase}
-        className="mt-4 w-full bg-indigo-500 text-white rounded-2xl py-3.5 text-base font-bold shadow-md"
+        className="mt-4 w-full bg-indigo-500 text-white rounded-2xl py-3.5 text-base font-bold shadow-md active:scale-95 transition-transform"
       >
         เริ่มโหวตให้เพื่อนๆ
       </button>
@@ -655,7 +776,7 @@ export default function EmpathyFamilyGame() {
   );
 
   const renderSpectrumVote = () => {
-    const targetPlayer = players[votingTargetIndex];
+    const targetPlayer = players[votingTargetIndex] || {};
     const voters = players.filter((p) => p.id !== targetPlayer.id);
     const allVoted = voters.every((v) => currentVotes[v.id]);
 
@@ -689,8 +810,11 @@ export default function EmpathyFamilyGame() {
                     <button
                       key={spec.id}
                       onClick={() => handleVote(voter.id, spec.id)}
-                      className={`py-2 rounded-xl text-xs font-bold border transition-all
-                        ${isSelected ? `${spec.color} ring-2 ring-offset-1 ring-${spec.color.split("-")[1]}-400` : "bg-gray-50 text-gray-400 border-gray-200"}`}
+                      className={`py-2 rounded-xl text-xs font-bold border transition-all ${
+                        isSelected
+                          ? `${spec.color} ring-2 ring-offset-1 ring-${spec.color.split("-")[1]}-400`
+                          : "bg-gray-50 text-gray-400 border-gray-200"
+                      }`}
                     >
                       {spec.label}
                     </button>
@@ -704,11 +828,17 @@ export default function EmpathyFamilyGame() {
         <button
           onClick={submitVotesForTarget}
           disabled={!allVoted}
-          className={`mt-3 w-full rounded-2xl py-3.5 text-base font-bold transition-all shadow-md ${allVoted ? "bg-indigo-500 text-white" : "bg-gray-200 text-gray-400 cursor-not-allowed"}`}
+          className={`mt-3 w-full rounded-2xl py-3.5 text-base font-bold transition-all shadow-md ${
+            allVoted
+              ? "bg-indigo-500 text-white active:scale-95"
+              : "bg-gray-200 text-gray-400 cursor-not-allowed"
+          }`}
         >
           {votingTargetIndex < players.length - 1
             ? "ยืนยัน และโหวตคนต่อไป"
-            : "ดูผลลัพธ์"}
+            : currentRound < TOTAL_ROUNDS
+              ? "จบรอบที่ 1 (ไปรอบที่ 2)"
+              : "ดูผลลัพธ์จบเกม"}
         </button>
       </div>
     );
@@ -733,16 +863,16 @@ export default function EmpathyFamilyGame() {
             ยอดเยี่ยมมาก!
           </h2>
           <p className="text-gray-500 font-medium mb-8 text-base">
-            พวกคุณได้เรียนรู้และ
+            พวกคุณได้ร่วมกันรับฟัง
             <br />
-            ทำความเข้าใจกันมากขึ้นแล้ว
+            และโอบกอดปัญหาของกันและกันแล้ว
           </p>
           <button
             onClick={() => {
               setGameState("lobby");
               setPlayerCount(4);
             }}
-            className="w-full bg-amber-500 text-white rounded-2xl py-3.5 text-base font-bold flex justify-center items-center gap-2 shadow-md"
+            className="w-full bg-amber-500 text-white rounded-2xl py-3.5 text-base font-bold flex justify-center items-center gap-2 shadow-md active:scale-95 transition-transform"
           >
             <RefreshCcw className="w-4 h-4" /> เล่นใหม่อีกครั้ง
           </button>
@@ -750,18 +880,18 @@ export default function EmpathyFamilyGame() {
       );
     }
 
-    const currentPlayer = players[revealIndex];
-    const result = getLotusResult(currentPlayer.compassionScore);
+    const currentPlayer = players[revealIndex] || {};
+    const result = getLotusResult(currentPlayer.compassionScore || 0);
 
     return (
       <div className="flex-1 w-full bg-[#F8FAFC] p-4 flex flex-col items-center justify-center relative overflow-hidden">
-        {/* Card Container */}
         <div className="w-full max-w-sm h-[400px] [perspective:1000px] my-auto">
           <div
-            className={`relative w-full h-full transition-all duration-700 [transform-style:preserve-3d] cursor-pointer shadow-xl rounded-3xl ${isCardFlipped ? "[transform:rotateY(180deg)]" : ""}`}
+            className={`relative w-full h-full transition-all duration-700 [transform-style:preserve-3d] cursor-pointer shadow-xl rounded-3xl ${
+              isCardFlipped ? "[transform:rotateY(180deg)]" : ""
+            }`}
             onClick={() => !isCardFlipped && setIsCardFlipped(true)}
           >
-            {/* Front of Card */}
             <div className="absolute inset-0 [backface-visibility:hidden] bg-gradient-to-br from-indigo-500 to-purple-500 rounded-3xl flex flex-col items-center justify-center p-6 text-white shadow-lg">
               <h2 className="text-lg font-bold opacity-80 mb-1">ผลลัพธ์ของ</h2>
               <h3 className="text-3xl font-black mb-1">{currentPlayer.role}</h3>
@@ -776,7 +906,6 @@ export default function EmpathyFamilyGame() {
               </p>
             </div>
 
-            {/* Back of Card (Flipped) - Only Image & Download */}
             <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-[#FDF8F5] rounded-3xl p-4 flex flex-col justify-between border-4 border-white shadow-xl">
               <div className="text-center w-full shrink-0">
                 <p className="text-gray-400 text-[10px] font-bold uppercase tracking-widest">
@@ -784,7 +913,6 @@ export default function EmpathyFamilyGame() {
                 </p>
               </div>
 
-              {/* Full Image Container */}
               <div className="w-full flex-1 bg-white rounded-2xl my-2 flex items-center justify-center overflow-hidden shadow-inner border border-gray-100 relative">
                 <img
                   src={`/${result.filename}`}
@@ -796,7 +924,6 @@ export default function EmpathyFamilyGame() {
                 />
               </div>
 
-              {/* Download Button */}
               <div className="shrink-0 pt-1">
                 <button
                   onClick={handleDownloadCard}
@@ -809,7 +936,6 @@ export default function EmpathyFamilyGame() {
           </div>
         </div>
 
-        {/* Next Button outside the card */}
         {isCardFlipped && (
           <div className="w-full max-w-sm mt-3 pb-2 shrink-0">
             <button
@@ -830,64 +956,20 @@ export default function EmpathyFamilyGame() {
   return (
     <div className="min-h-[100dvh] w-full bg-slate-100 flex items-center justify-center font-sans">
       <div className="w-full min-h-[100dvh] bg-white relative flex flex-col">
-        {/* Bloom Together Header Bar */}
         <div className="w-full py-3 bg-[#FFF5F5] border-b border-rose-100 flex items-center justify-center sticky top-0 z-50 shadow-sm shrink-0">
           <span className="font-serif italic text-rose-500 font-bold text-lg tracking-wider">
             Bloom Together
           </span>
         </div>
 
-        {/* Screen Wrapper with Dynamic Key for Global Fade-in */}
         <div
-          key={gameState}
+          key={`${gameState}-${currentRound}`}
           className="flex-1 w-full relative flex flex-col animate-in fade-in zoom-in-[0.98] duration-500 ease-out overflow-hidden"
         >
           {gameState === "lobby" && renderLobby()}
-          {gameState === "pass_role" &&
-            renderPassScreen(
-              "บทบาทของคุณในรอบนี้คือ",
-              <div className="text-4xl font-black text-blue-500 bg-blue-50 w-full py-6 rounded-3xl border border-blue-100">
-                {players[currentPlayerIndex].role}
-              </div>,
-              handleNextPlayerRole,
-              true,
-            )}
-          {gameState === "reflection" && renderReflection()}
-          {gameState === "pass_emotion" &&
-            renderPassScreen(
-              `คุณ (${players[currentPlayerIndex].role}) รู้สึกอย่างไรกับสถานการณ์นี้?`,
-              <div className="w-full grid gap-3 mt-1">
-                <button
-                  onClick={() => handleSelectEmotion("green")}
-                  className="flex items-center gap-3 p-3.5 rounded-2xl border-2 border-green-100 bg-green-50 active:scale-95 transition-transform"
-                >
-                  <Smile className="w-8 h-8 text-green-500" />
-                  <span className="font-bold text-green-700 text-base">
-                    สบายใจ
-                  </span>
-                </button>
-                <button
-                  onClick={() => handleSelectEmotion("gray")}
-                  className="flex items-center gap-3 p-3.5 rounded-2xl border-2 border-gray-100 bg-gray-50 active:scale-95 transition-transform"
-                >
-                  <Meh className="w-8 h-8 text-gray-500" />
-                  <span className="font-bold text-gray-700 text-base">
-                    เฉยๆ / ปกติ
-                  </span>
-                </button>
-                <button
-                  onClick={() => handleSelectEmotion("red")}
-                  className="flex items-center gap-3 p-3.5 rounded-2xl border-2 border-red-100 bg-red-50 active:scale-95 transition-transform"
-                >
-                  <Frown className="w-8 h-8 text-red-500" />
-                  <span className="font-bold text-red-700 text-base">
-                    ไม่สบายใจ
-                  </span>
-                </button>
-              </div>,
-              null,
-              false,
-            )}
+          {gameState === "pass_role" && renderPassScreenRole()}
+          {gameState === "problem_reflection" && renderProblemReflection()}
+          {gameState === "pass_emotion" && renderPassScreenEmotion()}
           {gameState === "randomizer" && renderRandomizer()}
           {gameState === "speaker" && renderSpeaker()}
           {gameState === "spectrum_guide" && renderSpectrumGuide()}
