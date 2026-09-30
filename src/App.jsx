@@ -344,18 +344,25 @@ export default function EmpathyFamilyGame() {
       "ระบบเตรียมการ์ดของคุณพร้อมแล้ว! \nกรุณา 'แคปหน้าจอ' (Screenshot) เพื่อบันทึกผลลัพธ์นี้เก็บไว้ในเครื่องของคุณได้เลยครับ 🌸",
     );
   };
+  useEffect(() => {
+    document.title = "Bloom Together";
+  }, []);
 
   const renderLobby = () => (
     <div className="flex flex-col h-full bg-[#FDF8F5] p-6">
       <div className="flex flex-col items-center justify-center pt-6 pb-6">
-        <div className="bg-white p-4 rounded-3xl shadow-sm mb-3 border border-orange-50">
-          <HeartHandshake className="w-10 h-10 text-rose-400" />
+        <div className="bg-white p-2 rounded-3xl shadow-sm mb-3 border border-orange-50 flex items-center justify-center">
+          <img
+            src="/Logo.png"
+            alt="Logo"
+            className="w-12 h-12 object-contain"
+          />
         </div>
         <h1 className="text-2xl font-black text-gray-800 text-center leading-tight">
-          Empathy <br /> <span className="text-rose-400">Family Game</span>
+          Bloom <br /> <span className="text-rose-400">Together</span>
         </h1>
         <p className="text-gray-500 text-xs mt-2 font-medium text-center px-4">
-          เกมการ์ดครอบครัว เพื่อความเข้าใจอกเข้าใจกัน (เล่น 2 รอบ)
+          “Let’s grow our Bloom together”
         </p>
       </div>
 
@@ -845,10 +852,40 @@ export default function EmpathyFamilyGame() {
   };
 
   const getLotusResult = (score) => {
-    if (score >= 5) return { filename: "lotus-shower.png" };
-    if (score >= 3) return { filename: "lotus-bloom.png" };
-    if (score >= 1) return { filename: "lotus-bud.png" };
-    return { filename: "lotus-sprout.png" };
+    // 7 - 8 ครั้งขึ้นไป
+    if (score >= 7) {
+      return {
+        title: "ฝักบัวแสนอร่อยพร้อมแบ่งปัน",
+        filename: "lotus-shower.jpg",
+        condition: "ตอบตรงกับ Compassionate Communication 7-8 ครั้ง",
+        desc: "ศูนย์รวมความสงบที่มั่นคง รับฟังลึกซึ้งไร้การตัดสิน ทุกคำพูดคือสะพานเชื่อมใจที่เปลี่ยนแรงตึงเครียดให้เป็นพลังสุข เปรียบดั่งพื้นที่ปลอดภัยที่พร้อมโอบอุ้มให้ทุกคนเปล่งประกายไปด้วยกัน",
+      };
+    }
+    // 4 - 6 ครั้ง
+    if (score >= 4) {
+      return {
+        title: "ดอกบัวบานสะพรั่งส่งกลิ่นหอม",
+        filename: "lotus-bloom.jpg",
+        condition: "ตอบตรงกับ Compassionate Communication 4-6 ครั้ง",
+        desc: "งดงามด้วยการผสานสติและความเมตตา สื่อสารตรงไปตรงมาทว่าอ่อนโยนต่อหัวใจ รับฟังทุกความต่างอย่างเข้าใจและเปลี่ยนบทสนทนาให้ลื่นไหล สร้างบรรยากาศแห่งความไว้วางใจให้ทีมก้าวไปข้างหน้า",
+      };
+    }
+    // 1 - 3 ครั้ง
+    if (score >= 1) {
+      return {
+        title: "ดอกบัวตูมล่องลอยบนน้ำ",
+        filename: "lotus-bud.jpg",
+        condition: "ตอบตรงกับ Compassionate Communication 1-3 ครั้ง",
+        desc: "หัวใจเปี่ยมเจตนาดีที่พร้อมแคร์คนรอบข้าง สติเริ่มตื่นรู้เท่าทันอารมณ์และบรรยากาศ กล้าเปิดใจปรับเปลี่ยนคำพูดอย่างนุ่มนวล ทุกการหยุดฟังคือการค่อยๆ ผลิบานสู่อีกขั้นของความมั่นคงทางใจ",
+      };
+    }
+    // 0 ครั้ง
+    return {
+      title: "ต้นอ่อนพร้อมเติบโต",
+      filename: "lotus-sprout.jpg",
+      condition: "ตอบตรงกับ Compassionate Communication 0 ครั้ง",
+      desc: "เปี่ยมพลังชีวิต ความจริงใจ และความมุ่งมั่นผลักดันทีม เมล็ดพันธุ์แห่งสติได้ถูกหยั่งรากลงแล้ว เพียงเติมการหยุดหายใจและใส่ใจรับฟัง คุณพร้อมเติบโตเป็นร่มเงาที่แข็งแรงและงดงาม",
+    };
   };
 
   const renderEndGameReveal = () => {
@@ -885,7 +922,7 @@ export default function EmpathyFamilyGame() {
 
     return (
       <div className="flex-1 w-full bg-[#F8FAFC] p-4 flex flex-col items-center justify-center relative overflow-hidden">
-        <div className="w-full max-w-sm h-[400px] [perspective:1000px] my-auto">
+        <div className="w-full max-w-sm h-[80vh] [perspective:1000px] my-auto">
           <div
             className={`relative w-full h-full transition-all duration-700 [transform-style:preserve-3d] cursor-pointer shadow-xl rounded-3xl ${
               isCardFlipped ? "[transform:rotateY(180deg)]" : ""
@@ -913,15 +950,26 @@ export default function EmpathyFamilyGame() {
                 </p>
               </div>
 
-              <div className="w-full flex-1 bg-white rounded-2xl my-2 flex items-center justify-center overflow-hidden shadow-inner border border-gray-100 relative">
+              <div className="w-full flex-1  bg-white rounded-2xl my-2 flex items-center justify-center overflow-hidden shadow-inner border border-gray-100 relative">
                 <img
                   src={`/${result.filename}`}
                   alt="Lotus Result"
-                  className="w-full h-full object-contain p-2"
+                  className="w-full h-full object-cover"
                   onError={(e) => {
                     e.target.style.display = "none";
                   }}
                 />
+              </div>
+              {/* Text Under Image (Blended Seamlessly) */}
+              <div className="text-center px-2 shrink-0 mb-2">
+                <h4 className="text-base font-black text-rose-500 leading-tight mb-1">
+                  {result.title}
+                </h4>
+                <div className="max-h-24 overflow-y-auto px-1 text-center scrollbar-none">
+                  <p className="text-[11px] text-gray-600 font-medium leading-relaxed">
+                    {result.desc}
+                  </p>
+                </div>
               </div>
 
               <div className="shrink-0 pt-1">
