@@ -104,22 +104,22 @@ const EMPATHY_SPECTRUM = [
   {
     id: "pity",
     label: "สงสาร",
-    color: "bg-orange-100 text-orange-700 border-orange-200",
+    color: "bg-[#FFA8BA]/20 text-[#E11D48] border-[#FFA8BA]",
   },
   {
     id: "sympathy",
     label: "เห็นใจ",
-    color: "bg-blue-100 text-blue-700 border-blue-200",
+    color: "bg-[#FF6B8B]/10 text-[#F43F5E] border-[#FF6B8B]",
   },
   {
     id: "empathy",
     label: "เข้าใจ",
-    color: "bg-purple-100 text-purple-700 border-purple-200",
+    color: "bg-[#2DD4BF]/20 text-[#0F766E] border-[#2DD4BF]",
   },
   {
     id: "compassion",
     label: "กรุณา",
-    color: "bg-emerald-100 text-emerald-700 border-emerald-200",
+    color: "bg-[#4ADE80]/20 text-[#16A34A] border-[#4ADE80]",
   },
 ];
 
@@ -195,7 +195,6 @@ export default function EmpathyFamilyGame() {
       setCurrentPlayerIndex((prev) => prev + 1);
       setIsRevealed(false);
     } else {
-      // ดูบทบาทครบแล้ว เข้าหน้าเสนอปัญหาพร้อมเริ่มนับถอยหลังทันที
       setTimeLeft(60);
       setGameState("problem_reflection");
     }
@@ -284,7 +283,6 @@ export default function EmpathyFamilyGame() {
     }
   };
 
-  // นับเวลาถอยหลัง 60 วิ สำหรับหน้าเสนอปัญหา + Reflection
   useEffect(() => {
     let timer;
     if (gameState === "problem_reflection" && timeLeft > 0) {
@@ -329,7 +327,7 @@ export default function EmpathyFamilyGame() {
         );
         setCurrentPlayerIndex(0);
         setTimeLeft(60);
-        setGameState("problem_reflection"); // เข้าสู่รอบที่ 2 จับเวลาพร้อมปัญหาทันที
+        setGameState("problem_reflection");
       } else {
         setRevealIndex(0);
         setIsCardFlipped(false);
@@ -344,37 +342,41 @@ export default function EmpathyFamilyGame() {
       "ระบบเตรียมการ์ดของคุณพร้อมแล้ว! \nกรุณา 'แคปหน้าจอ' (Screenshot) เพื่อบันทึกผลลัพธ์นี้เก็บไว้ในเครื่องของคุณได้เลยครับ 🌸",
     );
   };
+
   useEffect(() => {
     document.title = "Bloom Together";
   }, []);
 
   const renderLobby = () => (
-    <div className="flex flex-col h-full bg-[#FDF8F5] p-6">
+    <div className="flex flex-col h-full bg-[#FFFFFF] p-6">
       <div className="flex flex-col items-center justify-center pt-6 pb-6">
-        <div className="bg-white p-2 rounded-3xl shadow-sm mb-3 border border-orange-50 flex items-center justify-center">
+        <div className="bg-white p-2 rounded-3xl shadow-sm mb-3 border border-[#FEF08A] flex items-center justify-center">
           <img
             src="/Logo.png"
             alt="Logo"
             className="w-12 h-12 object-contain"
+            onError={(e) => {
+              e.target.style.display = "none";
+            }}
           />
         </div>
         <h1 className="text-2xl font-black text-gray-800 text-center leading-tight">
-          Bloom <br /> <span className="text-rose-400">Together</span>
+          Bloom <br /> <span className="text-[#FF6B8B]">Together</span>
         </h1>
         <p className="text-gray-500 text-xs mt-2 font-medium text-center px-4">
           “Let’s grow our Bloom together”
         </p>
       </div>
 
-      <div className="flex-1 bg-white rounded-[2rem] shadow-[0_8px_30px_rgba(0,0,0,0.03)] p-5 flex flex-col gap-6 justify-center">
+      <div className="flex-1 bg-white rounded-[2rem] shadow-[0_8px_30px_rgba(0,0,0,0.03)] p-5 flex flex-col gap-6 justify-center border border-[#FEF08A]/50">
         <div>
           <label className="text-xs font-bold text-gray-700 mb-2 flex items-center gap-2">
-            <Users className="w-4 h-4 text-emerald-500" /> จำนวนผู้เล่น
+            <Users className="w-4 h-4 text-[#4ADE80]" /> จำนวนผู้เล่น
           </label>
-          <div className="flex items-center justify-between bg-gray-50 rounded-2xl p-2">
+          <div className="flex items-center justify-between bg-[#FFFFFF] rounded-2xl p-2 border border-[#FEF08A]/50">
             <button
               onClick={() => setPlayerCount(Math.max(2, playerCount - 1))}
-              className="w-10 h-10 flex items-center justify-center bg-white rounded-xl shadow-sm text-lg font-bold text-gray-600"
+              className="w-10 h-10 flex items-center justify-center bg-white rounded-xl shadow-sm text-lg font-bold text-[#FF6B8B] border border-[#FEF08A]"
             >
               -
             </button>
@@ -383,7 +385,7 @@ export default function EmpathyFamilyGame() {
             </span>
             <button
               onClick={() => setPlayerCount(Math.min(8, playerCount + 1))}
-              className="w-10 h-10 flex items-center justify-center bg-white rounded-xl shadow-sm text-lg font-bold text-gray-600"
+              className="w-10 h-10 flex items-center justify-center bg-white rounded-xl shadow-sm text-lg font-bold text-[#FF6B8B] border border-[#FEF08A]"
             >
               +
             </button>
@@ -392,7 +394,7 @@ export default function EmpathyFamilyGame() {
 
         <button
           onClick={startGame}
-          className="w-full bg-emerald-500 hover:bg-emerald-400 text-white rounded-2xl py-4 text-base font-black flex items-center justify-center gap-2 shadow-md active:scale-95 transition-transform"
+          className="w-full bg-[#4ADE80] hover:bg-[#22C55E] text-white rounded-2xl py-4 text-base font-black flex items-center justify-center gap-2 shadow-md active:scale-95 transition-transform"
         >
           <Play className="fill-white w-4 h-4" /> เริ่มเกมสุ่มบทบาท
         </button>
@@ -403,9 +405,9 @@ export default function EmpathyFamilyGame() {
   const renderPassScreenRole = () => {
     const p = players[currentPlayerIndex] || {};
     return (
-      <div className="flex flex-col h-full bg-[#FDF8F5] p-5 text-center">
+      <div className="flex flex-col h-full bg-[#FFFFFF] p-5 text-center">
         <div className="flex justify-between items-center mb-4">
-          <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest">
+          <span className="bg-[#FEF08A] text-[#FF6B8B] px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest">
             ช่วงเริ่มต้นเกม
           </span>
           <span className="text-gray-400 font-bold text-xs">
@@ -415,45 +417,45 @@ export default function EmpathyFamilyGame() {
 
         <div className="flex-1 flex flex-col items-center justify-center w-full">
           {!isRevealed ? (
-            <div className="w-full bg-white p-6 rounded-[2rem] shadow-xl border border-gray-100 flex flex-col items-center">
-              <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-4">
-                <Users className="w-8 h-8 text-blue-400" />
+            <div className="w-full bg-white p-6 rounded-[2rem] shadow-xl border border-[#FEF08A]/50 flex flex-col items-center">
+              <div className="w-16 h-16 bg-[#2DD4BF]/20 rounded-full flex items-center justify-center mb-4">
+                <Users className="w-8 h-8 text-[#0F766E]" />
               </div>
               <h2 className="text-xl font-black text-gray-800 mb-1">
                 ส่งเครื่องให้
               </h2>
-              <h3 className="text-2xl font-black text-blue-500 mb-6">
+              <h3 className="text-2xl font-black text-[#FF6B8B] mb-6">
                 {p.name}
               </h3>
               <button
                 onClick={() => setIsRevealed(true)}
-                className="w-full bg-blue-500 text-white rounded-2xl py-3.5 text-base font-bold shadow-md active:scale-95 transition-transform"
+                className="w-full bg-[#2DD4BF] hover:bg-[#14B8A6] text-white rounded-2xl py-3.5 text-base font-bold shadow-md active:scale-95 transition-transform"
               >
                 ฉันคือ {p.name} (กดเพื่อดูบทบาท)
               </button>
             </div>
           ) : (
-            <div className="w-full bg-white p-6 rounded-[2rem] shadow-xl border border-gray-100 flex flex-col items-center">
+            <div className="w-full bg-white p-6 rounded-[2rem] shadow-xl border border-[#FEF08A]/50 flex flex-col items-center">
               <span className="text-gray-500 font-bold text-sm mb-4">
                 บทบาทและปัญหาลึกๆ ในใจของคุณ
               </span>
-              <div className="w-full bg-blue-50 p-5 rounded-3xl border border-blue-100 text-center">
-                <div className="text-3xl font-black text-blue-600 mb-2">
+              <div className="w-full bg-[#4ADE80]/10 p-5 rounded-3xl border border-[#4ADE80]/30 text-center">
+                <div className="text-3xl font-black text-[#16A34A] mb-2">
                   {p.role}
                 </div>
-                <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">
+                <div className="text-[10px] font-bold text-[#0F766E] uppercase tracking-widest mb-2">
                   ปัญหาประจำตัวของคุณ
                 </div>
                 <p className="text-sm font-bold text-gray-700 leading-relaxed">
                   "{p.problem}"
                 </p>
               </div>
-              <p className="text-xs text-rose-500 font-bold mt-4">
+              <p className="text-xs text-[#FF6B8B] font-bold mt-4">
                 จำปัญหาของคุณไว้ให้ดี เพราะอาจถูกสุ่มมาเป็นโจทย์!
               </p>
               <button
                 onClick={handleNextPlayerRole}
-                className="mt-6 w-full bg-gray-800 text-white rounded-2xl py-3.5 text-base font-bold shadow-md active:scale-95 transition-transform"
+                className="mt-6 w-full bg-[#FF6B8B] hover:bg-[#F43F5E] text-white rounded-2xl py-3.5 text-base font-bold shadow-md active:scale-95 transition-transform"
               >
                 {currentPlayerIndex < players.length - 1
                   ? "ซ่อน และส่งให้คนต่อไป"
@@ -466,22 +468,21 @@ export default function EmpathyFamilyGame() {
     );
   };
 
-  // หน้าจอ: เสนอปัญหา + จับเวลา 60 วินาทีพร้อมกัน
   const renderProblemReflection = () => {
     const owner = getCurrentRoundOwner();
     const isTimeOut = timeLeft === 0;
 
     return (
-      <div className="flex flex-col h-full bg-[#FFF7ED] p-5">
+      <div className="flex flex-col h-full bg-[#FFFFFF] p-5">
         <div className="flex justify-between items-center mb-3">
-          <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest">
+          <span className="bg-[#FEF08A] text-[#FF6B8B] px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest">
             รอบที่ {currentRound}/{TOTAL_ROUNDS}
           </span>
           <div
             className={`px-4 py-1.5 rounded-full shadow-sm flex items-center gap-2 border transition-all ${
               isTimeOut
-                ? "bg-red-500 text-white border-red-600 animate-pulse"
-                : "bg-white text-orange-600 border-orange-200"
+                ? "bg-[#FF6B8B] text-white border-[#FF6B8B] animate-pulse"
+                : "bg-white text-[#FF6B8B] border-[#FEF08A]"
             }`}
           >
             <Clock className="w-4 h-4" />
@@ -489,9 +490,9 @@ export default function EmpathyFamilyGame() {
           </div>
         </div>
 
-        <div className="flex-1 bg-white rounded-[2rem] shadow-lg border border-orange-100 p-6 flex flex-col justify-between items-center text-center">
+        <div className="flex-1 bg-white rounded-[2rem] shadow-lg border border-[#FEF08A] p-6 flex flex-col justify-between items-center text-center">
           <div className="w-full flex flex-col items-center">
-            <div className="inline-flex items-center gap-1.5 bg-orange-50 border border-orange-200 text-orange-700 px-3.5 py-1 rounded-full text-xs font-bold mb-3">
+            <div className="inline-flex items-center gap-1.5 bg-[#FFA8BA]/20 border border-[#FFA8BA]/50 text-[#FF6B8B] px-3.5 py-1 rounded-full text-xs font-bold mb-3">
               <AlertCircle className="w-3.5 h-3.5" />
               <span>
                 โจทย์ปัญหาจาก: {owner.role} ({owner.name})
@@ -502,19 +503,19 @@ export default function EmpathyFamilyGame() {
               "{owner.role}" กำลังเผชิญกับปัญหานี้:
             </h3>
 
-            <div className="bg-[#FFFDF9] border-2 border-orange-100 p-5 rounded-2xl w-full my-2 shadow-inner">
+            <div className="bg-[#FFFFFF] border-2 border-[#FEF08A] p-5 rounded-2xl w-full my-2 shadow-inner">
               <p className="text-base font-bold text-gray-800 leading-relaxed">
                 "{owner.problem}"
               </p>
             </div>
           </div>
 
-          <div className="bg-orange-50/70 p-3.5 rounded-2xl w-full border border-orange-100/60">
+          <div className="bg-[#FEF08A]/40 p-3.5 rounded-2xl w-full border border-[#FEF08A]">
             <p className="text-gray-500 text-xs font-medium leading-relaxed">
               🕒 ให้เวลาทุกคน 60 วินาที
               <br />
               ลองสวมบทบาทตัวเอง แล้วตกตะกอนว่ารู้สึกอย่างไรและจะพูดกับ{" "}
-              <span className="font-bold text-orange-700">
+              <span className="font-bold text-[#FF6B8B]">
                 {owner.role}
               </span>{" "}
               อย่างไร
@@ -526,8 +527,8 @@ export default function EmpathyFamilyGame() {
           onClick={startEmotionPhase}
           className={`mt-4 w-full rounded-2xl py-3.5 text-base font-bold shadow-md active:scale-95 transition-all ${
             isTimeOut
-              ? "bg-rose-500 hover:bg-rose-600 text-white animate-bounce"
-              : "bg-orange-500 hover:bg-orange-600 text-white"
+              ? "bg-[#FF6B8B] hover:bg-[#F43F5E] text-white animate-bounce"
+              : "bg-[#4ADE80] hover:bg-[#22C55E] text-white"
           }`}
         >
           {isTimeOut
@@ -543,9 +544,9 @@ export default function EmpathyFamilyGame() {
     const owner = getCurrentRoundOwner();
 
     return (
-      <div className="flex flex-col h-full bg-[#FDF8F5] p-5 text-center">
+      <div className="flex flex-col h-full bg-[#FFFFFF] p-5 text-center">
         <div className="flex justify-between items-center mb-4">
-          <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest">
+          <span className="bg-[#FEF08A] text-[#FF6B8B] px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest">
             รอบที่ {currentRound}/{TOTAL_ROUNDS}
           </span>
           <span className="text-gray-400 font-bold text-xs">
@@ -555,53 +556,53 @@ export default function EmpathyFamilyGame() {
 
         <div className="flex-1 flex flex-col items-center justify-center w-full">
           {!isRevealed ? (
-            <div className="w-full bg-white p-6 rounded-[2rem] shadow-xl border border-gray-100 flex flex-col items-center">
-              <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-4">
-                <Users className="w-8 h-8 text-blue-400" />
+            <div className="w-full bg-white p-6 rounded-[2rem] shadow-xl border border-[#FEF08A]/50 flex flex-col items-center">
+              <div className="w-16 h-16 bg-[#4ADE80]/20 rounded-full flex items-center justify-center mb-4">
+                <Users className="w-8 h-8 text-[#16A34A]" />
               </div>
               <h2 className="text-xl font-black text-gray-800 mb-1">
                 ส่งเครื่องให้
               </h2>
-              <h3 className="text-2xl font-black text-blue-500 mb-6">
+              <h3 className="text-2xl font-black text-[#FF6B8B] mb-6">
                 {p.name}
               </h3>
               <button
                 onClick={() => setIsRevealed(true)}
-                className="w-full bg-blue-500 text-white rounded-2xl py-3.5 text-base font-bold shadow-md active:scale-95 transition-transform"
+                className="w-full bg-[#4ADE80] hover:bg-[#22C55E] text-white rounded-2xl py-3.5 text-base font-bold shadow-md active:scale-95 transition-transform"
               >
                 ฉันคือ {p.name} (กดเพื่อเลือกอารมณ์)
               </button>
             </div>
           ) : (
-            <div className="w-full bg-white p-6 rounded-[2rem] shadow-xl border border-gray-100 flex flex-col items-center animate-in zoom-in-95">
+            <div className="w-full bg-white p-6 rounded-[2rem] shadow-xl border border-[#FEF08A]/50 flex flex-col items-center animate-in zoom-in-95">
               <span className="text-gray-500 font-bold text-sm mb-4">
                 คุณ ({p.role}) รู้สึกอย่างไรกับปัญหาของ {owner.role}?
               </span>
               <div className="w-full grid gap-3 mt-1">
                 <button
                   onClick={() => handleSelectEmotion("green")}
-                  className="flex items-center gap-3 p-3.5 rounded-2xl border-2 border-green-100 bg-green-50 active:scale-95 transition-transform"
+                  className="flex items-center gap-3 p-3.5 rounded-2xl border-2 border-[#4ADE80]/30 bg-[#4ADE80]/10 active:scale-95 transition-transform"
                 >
-                  <Smile className="w-8 h-8 text-green-500" />
-                  <span className="font-bold text-green-700 text-base">
+                  <Smile className="w-8 h-8 text-[#4ADE80]" />
+                  <span className="font-bold text-[#16A34A] text-base">
                     สบายใจ / ให้กำลังใจ
                   </span>
                 </button>
                 <button
                   onClick={() => handleSelectEmotion("gray")}
-                  className="flex items-center gap-3 p-3.5 rounded-2xl border-2 border-gray-100 bg-gray-50 active:scale-95 transition-transform"
+                  className="flex items-center gap-3 p-3.5 rounded-2xl border-2 border-[#2DD4BF]/30 bg-[#2DD4BF]/10 active:scale-95 transition-transform"
                 >
-                  <Meh className="w-8 h-8 text-gray-500" />
-                  <span className="font-bold text-gray-700 text-base">
+                  <Meh className="w-8 h-8 text-[#2DD4BF]" />
+                  <span className="font-bold text-[#0F766E] text-base">
                     เฉยๆ / รับฟังปกติ
                   </span>
                 </button>
                 <button
                   onClick={() => handleSelectEmotion("red")}
-                  className="flex items-center gap-3 p-3.5 rounded-2xl border-2 border-red-100 bg-red-50 active:scale-95 transition-transform"
+                  className="flex items-center gap-3 p-3.5 rounded-2xl border-2 border-[#FF6B8B]/30 bg-[#FF6B8B]/10 active:scale-95 transition-transform"
                 >
-                  <Frown className="w-8 h-8 text-red-500" />
-                  <span className="font-bold text-red-700 text-base">
+                  <Frown className="w-8 h-8 text-[#FF6B8B]" />
+                  <span className="font-bold text-[#F43F5E] text-base">
                     ไม่สบายใจ / เครียดตาม
                   </span>
                 </button>
@@ -616,9 +617,9 @@ export default function EmpathyFamilyGame() {
   const renderRandomizer = () => {
     const unSpokenPlayers = players.filter((p) => !p.hasSpoken);
     return (
-      <div className="flex flex-col h-full bg-[#F8FAFC] p-5 relative overflow-hidden">
+      <div className="flex flex-col h-full bg-[#FFFFFF] p-5 relative overflow-hidden">
         <div
-          className="absolute bottom-0 left-0 h-full bg-emerald-100 transition-all ease-linear"
+          className="absolute bottom-0 left-0 h-full bg-[#4ADE80]/30 transition-all ease-linear"
           style={{
             width: `${holdProgress}%`,
             opacity: holdProgress > 0 ? 0.5 : 0,
@@ -629,9 +630,9 @@ export default function EmpathyFamilyGame() {
             <h2 className="text-xl font-black text-gray-800 mb-1">
               สุ่มผู้พูดคนต่อไป
             </h2>
-            <p className="text-gray-500 text-xs font-medium bg-white py-1.5 px-3 rounded-full shadow-sm inline-block">
+            <p className="text-gray-500 text-xs font-medium bg-white py-1.5 px-3 rounded-full shadow-sm inline-block border border-[#FEF08A]">
               ให้ผู้ที่ยังไม่ได้พูด{" "}
-              <span className="text-emerald-500 font-bold">วางนิ้วค้างไว้</span>
+              <span className="text-[#4ADE80] font-bold">วางนิ้วค้างไว้</span>
             </p>
           </div>
           <div className="flex-1 grid grid-cols-2 gap-3 place-content-center">
@@ -642,8 +643,8 @@ export default function EmpathyFamilyGame() {
                   key={p.id}
                   className={`relative bg-white rounded-2xl p-4 flex flex-col items-center justify-center shadow-md border-2 select-none touch-none transition-all duration-300 ${
                     isActive
-                      ? "border-emerald-500 scale-95 bg-emerald-50"
-                      : "border-gray-100"
+                      ? "border-[#4ADE80] scale-95 bg-[#4ADE80]/10"
+                      : "border-[#FEF08A]/50"
                   }`}
                   onMouseDown={(e) => handleTouchStart(e, p.id)}
                   onMouseUp={(e) => handleTouchEnd(e, p.id)}
@@ -660,13 +661,13 @@ export default function EmpathyFamilyGame() {
                   </span>
                   <div className="mt-2">
                     {p.emotion === "green" && (
-                      <Smile className="text-green-500 w-6 h-6" />
+                      <Smile className="text-[#4ADE80] w-6 h-6" />
                     )}
                     {p.emotion === "gray" && (
-                      <Meh className="text-gray-500 w-6 h-6" />
+                      <Meh className="text-[#2DD4BF] w-6 h-6" />
                     )}
                     {p.emotion === "red" && (
-                      <Frown className="text-red-500 w-6 h-6" />
+                      <Frown className="text-[#FF6B8B] w-6 h-6" />
                     )}
                   </div>
                 </div>
@@ -683,37 +684,37 @@ export default function EmpathyFamilyGame() {
     const owner = getCurrentRoundOwner();
 
     return (
-      <div className="flex flex-col h-full bg-[#FEF2F2] p-5">
+      <div className="flex flex-col h-full bg-[#FFFFFF] p-5">
         <div className="flex justify-center mb-4 pt-2">
-          <div className="bg-red-100 text-red-600 px-4 py-1.5 rounded-full font-bold text-xs flex items-center gap-1.5">
+          <div className="bg-[#FFA8BA]/30 text-[#FF6B8B] px-4 py-1.5 rounded-full font-bold text-xs flex items-center gap-1.5">
             <Volume2 className="w-4 h-4" /> ผู้พูดปัจจุบัน
           </div>
         </div>
-        <div className="flex-1 flex flex-col items-center justify-center">
-          <div className="bg-white w-full rounded-[2rem] shadow-xl border border-red-100 p-6 flex flex-col items-center text-center">
+        <div className="flex-1 flex flex-col items-center justify-center mb-6">
+          <div className="bg-white/90 backdrop-blur-sm w-full rounded-[2rem] shadow-xl border border-white/60 p-6 flex flex-col items-center text-center">
             <div className="text-xs font-bold text-gray-400 mb-0.5">
               {speaker.name}
             </div>
             <div className="text-3xl font-black text-gray-800 mb-2">
               {speaker.role}
             </div>
-            <div className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-xl mb-4">
+            <div className="flex items-center gap-2 bg-[#FEF08A]/40 px-3 py-1.5 rounded-xl mb-4 border border-[#FEF08A]">
               <span className="text-xs font-bold text-gray-500">อารมณ์:</span>
               {speaker.emotion === "green" && (
-                <Smile className="text-green-500 w-5 h-5" />
+                <Smile className="text-[#4ADE80] w-5 h-5" />
               )}
               {speaker.emotion === "gray" && (
-                <Meh className="text-gray-500 w-5 h-5" />
+                <Meh className="text-[#2DD4BF] w-5 h-5" />
               )}
               {speaker.emotion === "red" && (
-                <Frown className="text-red-500 w-5 h-5" />
+                <Frown className="text-[#FF6B8B] w-5 h-5" />
               )}
             </div>
-            <div className="bg-red-50 p-4 rounded-2xl w-full border border-red-100">
-              <span className="text-[10px] font-bold text-red-400 uppercase block mb-1">
+            <div className="bg-[#FFA8BA]/10 p-4 rounded-2xl w-full border border-[#FFA8BA]/40">
+              <span className="text-[10px] font-bold text-[#FF6B8B] uppercase block mb-1">
                 หัวข้อสนทนา: ปัญหาของ {owner.role}
               </span>
-              <p className="text-xs font-bold text-red-800 leading-relaxed">
+              <p className="text-xs font-bold text-gray-800 leading-relaxed">
                 "{owner.problem}"
               </p>
             </div>
@@ -721,7 +722,7 @@ export default function EmpathyFamilyGame() {
         </div>
         <button
           onClick={handleFinishedSpeaking}
-          className="w-full bg-red-500 text-white rounded-2xl py-3.5 text-base font-bold shadow-md active:scale-95 transition-transform"
+          className="w-full mt-auto bg-[#F98BA9] hover:bg-[#e87a98] text-white rounded-2xl py-4 text-base font-bold shadow-lg active:scale-95 transition-transform shrink-0"
         >
           พูดจบแล้ว
         </button>
@@ -730,7 +731,7 @@ export default function EmpathyFamilyGame() {
   };
 
   const renderSpectrumGuide = () => (
-    <div className="flex flex-col h-full bg-[#FDF8F5] p-5 overflow-y-auto">
+    <div className="flex flex-col h-full bg-[#FFFFFF] p-5 overflow-y-auto">
       <div className="text-center mt-2 mb-4">
         <h2 className="text-xl font-black text-gray-800">
           ทำความรู้จัก 4 ระดับ
@@ -740,42 +741,91 @@ export default function EmpathyFamilyGame() {
         </p>
       </div>
       <div className="flex flex-col gap-3 flex-1">
-        <div className="bg-white p-3.5 rounded-2xl border-l-4 border-orange-400 shadow-sm">
-          <h3 className="font-bold text-orange-700 text-sm">Pity (สงสาร)</h3>
-          <p className="text-xs text-gray-600 mt-0.5">
-            มองจากที่สูงกว่า รู้สึกสงสารแต่ไม่ได้อยากเข้าไปช่วยคลี่คลาย
-            หรือใช้คำพูดบั่นทอนโดยไม่รู้ตัว
-          </p>
+        {/* Pity */}
+        <div className="bg-white p-3.5 rounded-2xl border-l-4 border-[#FFA8BA] shadow-sm flex items-start gap-3">
+          <img
+            src="/Pity.png"
+            alt="Pity"
+            className="w-25 h-25 object-contain shrink-0 mt-0.5"
+            onError={(e) => {
+              e.target.style.display = "none";
+            }}
+          />
+          <div className="flex-1">
+            <h3 className="font-bold text-[#FF6B8B] text-sm">Pity (สงสาร)</h3>
+            <p className="text-xs text-gray-600 mt-0.5">
+              มองจากที่สูงกว่า รู้สึกสงสารแต่ไม่ได้อยากเข้าไปช่วยคลี่คลาย
+              หรือใช้คำพูดบั่นทอนโดยไม่รู้ตัว
+            </p>
+          </div>
         </div>
-        <div className="bg-white p-3.5 rounded-2xl border-l-4 border-blue-400 shadow-sm">
-          <h3 className="font-bold text-blue-700 text-sm">Sympathy (เห็นใจ)</h3>
-          <p className="text-xs text-gray-600 mt-0.5">
-            รับรู้ความรู้สึกของอีกฝ่าย
-            พยายามปลอบใจแต่อาจจะรีบให้คำแนะนำหรือตัดสินปัญหาเร็วเกินไป
-          </p>
+
+        {/* Sympathy */}
+        <div className="bg-white p-3.5 rounded-2xl border-l-4 border-[#FF6B8B] shadow-sm flex items-start gap-3">
+          <img
+            src="/Sympathy.png"
+            alt="Sympathy"
+            className="w-25 h-25 object-contain shrink-0 mt-0.5"
+            onError={(e) => {
+              e.target.style.display = "none";
+            }}
+          />
+          <div className="flex-1">
+            <h3 className="font-bold text-[#FF6B8B] text-sm">
+              Sympathy (เห็นใจ)
+            </h3>
+            <p className="text-xs text-gray-600 mt-0.5">
+              รับรู้ความรู้สึกของอีกฝ่าย
+              พยายามปลอบใจแต่อาจจะรีบให้คำแนะนำหรือตัดสินปัญหาเร็วเกินไป
+            </p>
+          </div>
         </div>
-        <div className="bg-white p-3.5 rounded-2xl border-l-4 border-purple-400 shadow-sm">
-          <h3 className="font-bold text-purple-700 text-sm">
-            Empathy (เข้าใจ)
-          </h3>
-          <p className="text-xs text-gray-600 mt-0.5">
-            เอาใจเขามาใส่ใจเรา รับฟังอย่างลึกซึ้งโดยไม่ตัดสิน
-            และสะท้อนความรู้สึกของอีกฝ่ายได้ตรงจุด
-          </p>
+
+        {/* Empathy */}
+        <div className="bg-white p-3.5 rounded-2xl border-l-4 border-[#2DD4BF] shadow-sm flex items-start gap-3">
+          <img
+            src="/Empathy.png"
+            alt="Empathy"
+            className="w-25 h-25 object-contain shrink-0 mt-0.5"
+            onError={(e) => {
+              e.target.style.display = "none";
+            }}
+          />
+          <div className="flex-1">
+            <h3 className="font-bold text-[#0F766E] text-sm">
+              Empathy (เข้าใจ)
+            </h3>
+            <p className="text-xs text-gray-600 mt-0.5">
+              เอาใจเขามาใส่ใจเรา รับฟังอย่างลึกซึ้งโดยไม่ตัดสิน
+              และสะท้อนความรู้สึกของอีกฝ่ายได้ตรงจุด
+            </p>
+          </div>
         </div>
-        <div className="bg-white p-3.5 rounded-2xl border-l-4 border-emerald-400 shadow-sm">
-          <h3 className="font-bold text-emerald-700 text-sm">
-            Compassion (กรุณา)
-          </h3>
-          <p className="text-xs text-gray-600 mt-0.5">
-            เข้าใจความรู้สึกอย่างถ่องแท้
-            และพร้อมที่จะร่วมมือหาทางออกหรือซัพพอร์ตด้วยความเต็มใจ
-          </p>
+
+        {/* Compassion */}
+        <div className="bg-white p-3.5 rounded-2xl border-l-4 border-[#4ADE80] shadow-sm flex items-start gap-3">
+          <img
+            src="/Compassion.png"
+            alt="Compassion"
+            className="w-25 h-25 object-contain shrink-0 mt-0.5"
+            onError={(e) => {
+              e.target.style.display = "none";
+            }}
+          />
+          <div className="flex-1">
+            <h3 className="font-bold text-[#16A34A] text-sm">
+              Compassion (กรุณา)
+            </h3>
+            <p className="text-xs text-gray-600 mt-0.5">
+              เข้าใจความรู้สึกอย่างถ่องแท้
+              และพร้อมที่จะร่วมมือหาทางออกหรือซัพพอร์ตด้วยความเต็มใจ
+            </p>
+          </div>
         </div>
       </div>
       <button
         onClick={startVotingPhase}
-        className="mt-4 w-full bg-indigo-500 text-white rounded-2xl py-3.5 text-base font-bold shadow-md active:scale-95 transition-transform"
+        className="mt-4 w-full bg-[#4ADE80] hover:bg-[#22C55E] text-white rounded-2xl py-3.5 text-base font-bold shadow-md active:scale-95 transition-transform"
       >
         เริ่มโหวตให้เพื่อนๆ
       </button>
@@ -788,14 +838,14 @@ export default function EmpathyFamilyGame() {
     const allVoted = voters.every((v) => currentVotes[v.id]);
 
     return (
-      <div className="flex flex-col h-full bg-[#F8FAFC] p-4 overflow-y-auto">
-        <div className="bg-indigo-50 p-3.5 rounded-2xl mb-3 border border-indigo-100 text-center">
-          <p className="text-indigo-600 text-xs font-bold mb-0.5">
+      <div className="flex flex-col h-full bg-[#FFFFFF] p-4 overflow-y-auto">
+        <div className="bg-[#4ADE80]/10 p-3.5 rounded-2xl mb-3 border border-[#4ADE80]/30 text-center">
+          <p className="text-[#16A34A] text-xs font-bold mb-0.5">
             โหวตการสื่อสารของ
           </p>
-          <h2 className="text-2xl font-black text-indigo-900">
+          <h2 className="text-2xl font-black text-gray-800">
             {targetPlayer.role}{" "}
-            <span className="text-base text-indigo-500">
+            <span className="text-base text-[#4ADE80]">
               ({targetPlayer.name})
             </span>
           </h2>
@@ -805,7 +855,7 @@ export default function EmpathyFamilyGame() {
           {voters.map((voter) => (
             <div
               key={voter.id}
-              className="bg-white p-3.5 rounded-2xl shadow-sm border border-gray-100"
+              className="bg-white p-3.5 rounded-2xl shadow-sm border border-[#FEF08A]/50"
             >
               <div className="text-xs font-bold text-gray-500 mb-2">
                 {voter.role} ({voter.name}) คิดว่าเป็นแบบไหน?
@@ -819,9 +869,9 @@ export default function EmpathyFamilyGame() {
                       onClick={() => handleVote(voter.id, spec.id)}
                       className={`py-2 rounded-xl text-xs font-bold border transition-all ${
                         isSelected
-                          ? `${spec.color} ring-2 ring-offset-1 ring-${spec.color.split("-")[1]}-400`
-                          : "bg-gray-50 text-gray-400 border-gray-200"
-                      }`}
+                          ? `${spec.color} ring-2 ring-offset-1 ring-[#FEF08A]`
+                          : "bg-[#FFFFFF] text-gray-400 border-gray-200"
+                      } ${isSelected ? "shadow-sm" : ""}`}
                     >
                       {spec.label}
                     </button>
@@ -837,7 +887,7 @@ export default function EmpathyFamilyGame() {
           disabled={!allVoted}
           className={`mt-3 w-full rounded-2xl py-3.5 text-base font-bold transition-all shadow-md ${
             allVoted
-              ? "bg-indigo-500 text-white active:scale-95"
+              ? "bg-[#4ADE80] hover:bg-[#22C55E] text-white active:scale-95"
               : "bg-gray-200 text-gray-400 cursor-not-allowed"
           }`}
         >
@@ -852,49 +902,45 @@ export default function EmpathyFamilyGame() {
   };
 
   const getLotusResult = (score) => {
-    // 7 - 8 ครั้งขึ้นไป
     if (score >= 7) {
       return {
-        title: "ฝักบัวแสนอร่อยพร้อมแบ่งปัน",
-        filename: "lotus-shower.jpg",
+        title: "ดอกบัวบานสะพรั่งส่งกลิ่นหอม ",
+        filename: "lotus-shower.png",
         condition: "ตอบตรงกับ Compassionate Communication 7-8 ครั้ง",
-        desc: "ศูนย์รวมความสงบที่มั่นคง รับฟังลึกซึ้งไร้การตัดสิน ทุกคำพูดคือสะพานเชื่อมใจที่เปลี่ยนแรงตึงเครียดให้เป็นพลังสุข เปรียบดั่งพื้นที่ปลอดภัยที่พร้อมโอบอุ้มให้ทุกคนเปล่งประกายไปด้วยกัน",
+        desc: "คุณคือศูนย์รวมแห่งความนิ่งสงบและความมั่นคงทางใจของทีมอย่างแท้จริง ด้วยทักษะการมีสติที่รู้เท่าทันอารมณ์ตนเองในทุกสภาวะ ทำให้คุณสามารถรับฟังความรู้สึกและความต้องการลึกๆ ของผู้อื่นได้อย่างลึกซึ้งโดยปราศจากการตัดสิน ทุกถ้อยคำของคุณเปรียบเสมือนสะพานเชื่อมใจที่เปลี่ยนความตึงเครียดให้กลายเป็นความร่วมมือที่สร้างสรรค์ คุณพร้อมมอบความเข้าใจและเป็นที่พึ่งทางใจที่ช่วยให้คนรอบข้างรู้สึกปลอดภัย เปล่งประกาย และก้าวไปข้างหน้าด้วยกันอย่างมีความสุข",
       };
     }
-    // 4 - 6 ครั้ง
     if (score >= 4) {
       return {
-        title: "ดอกบัวบานสะพรั่งส่งกลิ่นหอม",
-        filename: "lotus-bloom.jpg",
+        title: "ดอกบัวตูมล่องลอยบนน้ำ",
+        filename: "lotus-bloom.png",
         condition: "ตอบตรงกับ Compassionate Communication 4-6 ครั้ง",
-        desc: "งดงามด้วยการผสานสติและความเมตตา สื่อสารตรงไปตรงมาทว่าอ่อนโยนต่อหัวใจ รับฟังทุกความต่างอย่างเข้าใจและเปลี่ยนบทสนทนาให้ลื่นไหล สร้างบรรยากาศแห่งความไว้วางใจให้ทีมก้าวไปข้างหน้า",
+        desc: "คุณมีความคล่องแคล่วและงดงามในการผสานสติเข้ากับความเมตตาได้อย่างเป็นธรรมชาติ สามารถสื่อสารความคิดและความต้องการของตนเองได้อย่างตรงไปตรงมาควบคู่ไปกับความนุ่มนวลที่ใส่ใจหัวใจของเพื่อนร่วมทีม คุณเปิดรับมุมมองที่แตกต่างด้วยความเข้าใจ และเมื่อต้องเผชิญกับสถานการณ์ที่เร่งรีบ คุณก็สามารถดึงสติกลับมาปรับบทสนทนาให้ลื่นไหลและเต็มไปด้วยพลังบวกได้อย่างรวดเร็ว นับเป็นแรงขับเคลื่อนที่สร้างบรรยากาศแห่งความไว้วางใจให้ทุกคนพร้อมก้าวไปด้วยกัน",
       };
     }
-    // 1 - 3 ครั้ง
     if (score >= 1) {
       return {
-        title: "ดอกบัวตูมล่องลอยบนน้ำ",
-        filename: "lotus-bud.jpg",
+        title: "ฝักบัวแสนอร่อยพร้อมแบ่งปัน",
+        filename: "lotus-bud.png",
         condition: "ตอบตรงกับ Compassionate Communication 1-3 ครั้ง",
-        desc: "หัวใจเปี่ยมเจตนาดีที่พร้อมแคร์คนรอบข้าง สติเริ่มตื่นรู้เท่าทันอารมณ์และบรรยากาศ กล้าเปิดใจปรับเปลี่ยนคำพูดอย่างนุ่มนวล ทุกการหยุดฟังคือการค่อยๆ ผลิบานสู่อีกขั้นของความมั่นคงทางใจ",
+        desc: "คุณมีหัวใจที่งดงามและเปี่ยมด้วยเจตนาอันบริสุทธิ์ที่แคร์ความรู้สึกของเพื่อนร่วมทีมอยู่เสมอ สติของคุณเริ่มทำงานอย่างว่องไวในการจับสังเกตคลื่นอารมณ์และบรรยากาศรอบตัว แม้ในบางจังหวะอาจยังต้องใช้พลังในการชะลอความคิดเพื่อเลือกคำพูดที่นุ่มนวล แต่ความกล้าหาญในการเปิดใจทดลองปรับเปลี่ยนวิธีการสื่อสารคือก้าวที่ทรงคุณค่า ทุกครั้งที่คุณหยุดฟังและส่งมอบความเข้าใจ คุณกำลังค่อยๆ ผลิบานเป็นดอกบัวที่สง่างามและมั่นคงขึ้นในทุกๆ วัน",
       };
     }
-    // 0 ครั้ง
     return {
       title: "ต้นอ่อนพร้อมเติบโต",
-      filename: "lotus-sprout.jpg",
+      filename: "lotus-sprout.png",
       condition: "ตอบตรงกับ Compassionate Communication 0 ครั้ง",
-      desc: "เปี่ยมพลังชีวิต ความจริงใจ และความมุ่งมั่นผลักดันทีม เมล็ดพันธุ์แห่งสติได้ถูกหยั่งรากลงแล้ว เพียงเติมการหยุดหายใจและใส่ใจรับฟัง คุณพร้อมเติบโตเป็นร่มเงาที่แข็งแรงและงดงาม",
+      desc: "คุณเปรียบเสมือนต้นอ่อนที่เต็มไปด้วยชีวิตชีวา ความจริงใจ และความมุ่งมั่นอย่างแรงกล้าที่จะพาทีมไปสู่เป้าหมาย การสื่อสารที่กระตือรือร้นและตรงจุดสะท้อนถึงพลังงานขับเคลื่อนอันมหาศาลในตัวคุณ คุณมีพื้นที่แห่งการเรียนรู้ที่เปิดกว้างและไร้ขีดจำกัด การได้สะท้อนและตระหนักรู้ถึงรูปแบบการสื่อสารในวันนี้คือเมล็ดพันธุ์แห่งสติที่ถูกหยั่งรากลงไปแล้ว เพียงค่อยๆ เติมน้ำแห่งการหยุดหายใจและเพิ่มปุ๋ยแห่งการรับฟังใจตนเองและผู้อื่น คุณจะเติบโตขึ้นอย่างแข็งแรงและร่มรื่นได้อย่างแน่นอน",
     };
   };
 
   const renderEndGameReveal = () => {
     if (revealIndex >= players.length) {
       return (
-        <div className="flex flex-col items-center justify-center h-full bg-[#FDF8F5] p-6 text-center">
-          <div className="w-28 h-28 bg-amber-100 rounded-full flex items-center justify-center mb-6 relative shadow-sm">
-            <Star className="w-14 h-14 text-amber-500 fill-amber-500" />
-            <Sparkles className="w-7 h-7 text-amber-400 absolute top-0 right-0 animate-pulse" />
+        <div className="flex flex-col items-center justify-center h-full bg-[#FFFFFF] p-6 text-center">
+          <div className="w-28 h-28 bg-[#FEF08A] rounded-full flex items-center justify-center mb-6 relative shadow-sm">
+            <Star className="w-14 h-14 text-[#FFA8BA] fill-[#FFA8BA]" />
+            <Sparkles className="w-7 h-7 text-[#FF6B8B] absolute top-0 right-0 animate-pulse" />
           </div>
           <h2 className="text-3xl font-black text-gray-800 mb-3">
             ยอดเยี่ยมมาก!
@@ -909,7 +955,7 @@ export default function EmpathyFamilyGame() {
               setGameState("lobby");
               setPlayerCount(4);
             }}
-            className="w-full bg-amber-500 text-white rounded-2xl py-3.5 text-base font-bold flex justify-center items-center gap-2 shadow-md active:scale-95 transition-transform"
+            className="w-full bg-[#4ADE80] hover:bg-[#22C55E] text-white rounded-2xl py-3.5 text-base font-bold flex justify-center items-center gap-2 shadow-md active:scale-95 transition-transform"
           >
             <RefreshCcw className="w-4 h-4" /> เล่นใหม่อีกครั้ง
           </button>
@@ -921,7 +967,7 @@ export default function EmpathyFamilyGame() {
     const result = getLotusResult(currentPlayer.compassionScore || 0);
 
     return (
-      <div className="flex-1 w-full bg-[#F8FAFC] p-4 flex flex-col items-center justify-center relative overflow-hidden">
+      <div className="flex-1 w-full bg-[#FFFFFF] p-4 flex flex-col items-center justify-center relative overflow-hidden">
         <div className="w-full max-w-sm h-[80vh] [perspective:1000px] my-auto">
           <div
             className={`relative w-full h-full transition-all duration-700 [transform-style:preserve-3d] cursor-pointer shadow-xl rounded-3xl ${
@@ -929,7 +975,7 @@ export default function EmpathyFamilyGame() {
             }`}
             onClick={() => !isCardFlipped && setIsCardFlipped(true)}
           >
-            <div className="absolute inset-0 [backface-visibility:hidden] bg-gradient-to-br from-indigo-500 to-purple-500 rounded-3xl flex flex-col items-center justify-center p-6 text-white shadow-lg">
+            <div className="absolute inset-0 [backface-visibility:hidden] bg-gradient-to-br from-[#FF6B8B] to-[#FFA8BA] rounded-3xl flex flex-col items-center justify-center p-6 text-white shadow-lg">
               <h2 className="text-lg font-bold opacity-80 mb-1">ผลลัพธ์ของ</h2>
               <h3 className="text-3xl font-black mb-1">{currentPlayer.role}</h3>
               <p className="text-base opacity-90 mb-10">
@@ -943,14 +989,14 @@ export default function EmpathyFamilyGame() {
               </p>
             </div>
 
-            <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-[#FDF8F5] rounded-3xl p-4 flex flex-col justify-between border-4 border-white shadow-xl">
+            <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-[#FFFFFF] rounded-3xl p-4 flex flex-col justify-between border-4 border-white shadow-xl">
               <div className="text-center w-full shrink-0">
                 <p className="text-gray-400 text-[10px] font-bold uppercase tracking-widest">
                   ผลลัพธ์ของ {currentPlayer.name} ({currentPlayer.role})
                 </p>
               </div>
 
-              <div className="w-full flex-1  bg-white rounded-2xl my-2 flex items-center justify-center overflow-hidden shadow-inner border border-gray-100 relative">
+              <div className="w-full flex-1 bg-white rounded-2xl my-2 flex items-center justify-center overflow-hidden shadow-inner border border-[#FEF08A]/50 relative">
                 <img
                   src={`/${result.filename}`}
                   alt="Lotus Result"
@@ -960,9 +1006,10 @@ export default function EmpathyFamilyGame() {
                   }}
                 />
               </div>
+
               {/* Text Under Image (Blended Seamlessly) */}
               <div className="text-center px-2 shrink-0 mb-2">
-                <h4 className="text-base font-black text-rose-500 leading-tight mb-1">
+                <h4 className="text-base font-black text-[#FF6B8B] leading-tight mb-1">
                   {result.title}
                 </h4>
                 <div className="max-h-24 overflow-y-auto px-1 text-center scrollbar-none">
@@ -975,7 +1022,7 @@ export default function EmpathyFamilyGame() {
               <div className="shrink-0 pt-1">
                 <button
                   onClick={handleDownloadCard}
-                  className="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-600 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors border border-indigo-200 shadow-sm"
+                  className="w-full bg-[#4ADE80]/10 hover:bg-[#4ADE80]/20 text-[#16A34A] py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors border border-[#4ADE80]/30 shadow-sm"
                 >
                   <Download className="w-4 h-4" /> บันทึกการ์ดใบนี้
                 </button>
@@ -991,7 +1038,7 @@ export default function EmpathyFamilyGame() {
                 setIsCardFlipped(false);
                 setTimeout(() => setRevealIndex((prev) => prev + 1), 200);
               }}
-              className="w-full bg-gray-800 hover:bg-gray-900 text-white rounded-2xl py-3.5 text-base font-bold shadow-lg active:scale-95 transition-transform"
+              className="w-full bg-[#2DD4BF] hover:bg-[#14B8A6] text-white rounded-2xl py-3.5 text-base font-bold shadow-lg active:scale-95 transition-transform"
             >
               {revealIndex < players.length - 1 ? "ดูผลลัพธ์คนต่อไป" : "จบเกม"}
             </button>
@@ -1002,10 +1049,10 @@ export default function EmpathyFamilyGame() {
   };
 
   return (
-    <div className="min-h-[100dvh] w-full bg-slate-100 flex items-center justify-center font-sans">
-      <div className="w-full min-h-[100dvh] bg-white relative flex flex-col">
-        <div className="w-full py-3 bg-[#FFF5F5] border-b border-rose-100 flex items-center justify-center sticky top-0 z-50 shadow-sm shrink-0">
-          <span className="font-serif italic text-rose-500 font-bold text-lg tracking-wider">
+    <div className="min-h-[100dvh] w-full bg-[#FEF08A]/50 flex items-center justify-center font-sans">
+      <div className="w-full min-h-[100dvh] bg-white relative flex flex-col shadow-xl max-w-md mx-auto">
+        <div className="w-full py-3 bg-[#FFFFFF] border-b border-[#FEF08A] flex items-center justify-center sticky top-0 z-50 shadow-sm shrink-0">
+          <span className="font-serif italic text-[#FF6B8B] font-bold text-lg tracking-wider">
             Bloom Together
           </span>
         </div>
